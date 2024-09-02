@@ -56,7 +56,7 @@ func LoadConfigFromToml(path string) error {
 
 // LoadCOnfigFromEnv 加载环境变量的配置
 // 使用 "github.com/caarlos0/env/v6" 包
-func LoadCOnfigFromEnv() error {
+func LoadConfigFromEnv() error {
 	defaultconfig := DefaultConfig()
 
 	if err := env.Parse(defaultconfig); err != nil {

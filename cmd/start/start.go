@@ -22,7 +22,7 @@ var Cmd = &cobra.Command{
 		// 读取配置文件
 		switch configType {
 		case "env":
-			if err := conf.LoadCOnfigFromEnv(); err != nil {
+			if err := conf.LoadConfigFromEnv(); err != nil {
 				return err
 			}
 		default:

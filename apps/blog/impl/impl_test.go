@@ -13,7 +13,7 @@ var (
 func init() {
 	var err error
 
-	err = conf.LoadCOnfigFromEnv()
+	err = conf.LoadConfigFromEnv()
 	if err != nil {
 		panic(err)
 	}
