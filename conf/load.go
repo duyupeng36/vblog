@@ -8,19 +8,6 @@ import (
 	"github.com/pelletier/go-toml/v2"
 )
 
-var (
-	config *Config
-)
-
-// 获取全局配置
-func C() *Config {
-
-	if config == nil {
-		log.Fatalf("the config doesn't load, please call the func LoadConfigFromToml or LoadCOnfigFromEnv")
-	}
-	return config
-}
-
 // LoadConfigFromToml 从配置文件中读取
 func LoadConfigFromToml(path string) error {
 
