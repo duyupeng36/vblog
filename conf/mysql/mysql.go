@@ -10,6 +10,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+	"gorm.io/gorm/logger"
 )
 
 type MySQL struct {
@@ -114,6 +115,7 @@ func (m *MySQL) GORM() (*gorm.DB, error) {
 			SkipDefaultTransaction: false,
 			// CreateBatchSize：为了高效的批量插入数据，一次最大写入 200 个
 			CreateBatchSize: 200,
+			Logger:          logger.Default.LogMode(logger.Info),
 		})
 		if err != nil {
 			return nil, err

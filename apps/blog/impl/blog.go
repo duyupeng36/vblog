@@ -44,8 +44,27 @@ func (i *impl) CreateBlog(ctx context.Context, body *blog.Body) (*blog.Blog, err
 }
 
 // QueryBlog 获取文章列表
-func (i *impl) QueryBlog(context.Context, *blog.QueryBlogRequest) (*blog.BlogSet, error) {
-	return nil, nil
+func (i *impl) QueryBlog(ctx context.Context, in *blog.QueryBlogRequest) (*blog.BlogSet, error) {
+
+	var set = blog.NewBlogSet()
+
+	// 构建 SQL 语句
+	query := i.db.WithContext(ctx).Model(&blog.Blog{})
+
+	if in.Keywords != "" {
+		query = query.Where("content LIKE ?", "%"+in.Keywords+"%")
+	}
+
+	if in.Author != "" {
+		query = query.Where("author = ?", in.Author)
+	}
+
+	// 分页
+	if err := query.Count(&set.Total).Offset(in.Offset()).Limit(in.PageSize).Find(&set.Items).Error; err != nil {
+		return nil, utils.NewAPIError(http.StatusBadRequest, err.Error())
+	}
+
+	return set, nil
 }
 
 // DescribeBlog 获取一篇博客

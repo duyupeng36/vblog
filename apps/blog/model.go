@@ -7,7 +7,19 @@ import (
 )
 
 type BlogSet struct {
+	Total int64   `json:"total"`
 	Items []*Blog `json:"items"`
+}
+
+func NewBlogSet() *BlogSet {
+	return &BlogSet{
+		Items: []*Blog{},
+	}
+}
+
+func (set *BlogSet) String() string {
+	b, _ := json.MarshalIndent(set, "", "  ")
+	return string(b)
 }
 
 // Blog 代表文章的数据结构
@@ -25,7 +37,7 @@ func NewBlog(body *Body) *Blog {
 
 func (b *Blog) String() string {
 
-	if result, err := json.Marshal(b); err != nil {
+	if result, err := json.MarshalIndent(b, "", "  "); err != nil {
 		return ""
 	} else {
 		return string(result)

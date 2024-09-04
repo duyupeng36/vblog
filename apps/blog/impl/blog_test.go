@@ -22,3 +22,15 @@ func TestCreateBlog(t *testing.T) {
 
 	t.Log(ins)
 }
+
+func TestQueryBlog(t *testing.T) {
+	req := blog.NewQueryBlogRequest()
+	req.PageSize = 1
+	req.Keywords = "项目"
+	set, err := controller.QueryBlog(ctx, req)
+	if err != nil {
+		t.Fatal(err)
+	}
+	t.Log(set)
+
+}

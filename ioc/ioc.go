@@ -49,7 +49,9 @@ func (i *ioc) Init(r gin.IRouter) error {
 		if err := v.Init(); err != nil {
 			return err
 		}
-		v.Registry(r)
+		if r != nil {
+			v.Registry(r)
+		}
 	}
 	return nil
 }
