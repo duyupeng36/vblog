@@ -1,8 +1,13 @@
 package ioc
 
-import "github.com/gin-gonic/gin"
+import (
+	"sync"
+
+	"github.com/gin-gonic/gin"
+)
 
 var (
+	once      sync.Once
 	container *ioc
 )
 
@@ -50,5 +55,7 @@ func (i *ioc) Init(r gin.IRouter) error {
 }
 
 func init() {
-	container = New()
+	once.Do(func() {
+		container = New()
+	})
 }
