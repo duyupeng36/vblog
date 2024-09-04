@@ -2,8 +2,6 @@ package impl_test
 
 import (
 	"vblog/apps/comment"
-	"vblog/apps/comment/impl"
-	"vblog/conf"
 )
 
 var (
@@ -11,15 +9,15 @@ var (
 )
 
 func init() {
-	var err error
+	// var err error
 
-	err = conf.LoadConfigFromEnv()
-	if err != nil {
-		panic(err)
-	}
+	// err = conf.LoadConfigFromEnv()
+	// if err != nil {
+	// 	panic(err)
+	// }
 
-	controller, err = impl.NewCommentService()
-	if err != nil {
-		panic(err)
-	}
+	// controller, err = impl.NewCommentService()
+	// if err != nil {
+	// 	panic(err)
+	// }
 }

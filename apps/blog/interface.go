@@ -4,6 +4,11 @@ import (
 	"context"
 )
 
+const (
+	// 业务的名字
+	AppName = "blogs"
+)
+
 // 博客管理的业务接口声明。隔离服务的具体实现
 
 type Service interface {

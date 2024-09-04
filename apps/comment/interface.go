@@ -2,6 +2,10 @@ package comment
 
 import "context"
 
+const (
+	AppName = "comments"
+)
+
 // 博客管理的业务接口声明
 
 type Service interface {

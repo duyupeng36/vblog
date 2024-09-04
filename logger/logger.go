@@ -18,7 +18,7 @@ func Logger() *zerolog.Logger {
 }
 
 func init() {
-
+	// 程序启动时，这个包每次被 import 时都会执行 init 方法，这里我们使用 sync.Once 保证 logger 的初始化只执行一次
 	once.Do(func() {
 		writer := zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: "2006-01-02 15:04:05 -0700"}
 

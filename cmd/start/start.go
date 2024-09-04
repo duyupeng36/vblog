@@ -1,15 +1,14 @@
 package start
 
 import (
-	"vblog/apps/blog/api"
-	"vblog/apps/blog/impl"
-	api2 "vblog/apps/comment/api"
-	impl2 "vblog/apps/comment/impl"
 	"vblog/conf"
+	"vblog/ioc"
 	"vblog/protocal"
 
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
+
+	_ "vblog/apps" // 导入 apps
 )
 
 var configType string
@@ -34,27 +33,32 @@ var Cmd = &cobra.Command{
 		}
 
 		// 初始化业务控制器
-		blogServer, err := impl.NewBlogService()
-		if err != nil {
-			return err
-		}
-		commentServer, err := impl2.NewCommentService()
-		if err != nil {
-			return err
-		}
+		// blogServer, err := impl.NewBlogService()
+		// if err != nil {
+		// 	return err
+		// }
+		// commentServer, err := impl2.NewCommentService()
+		// if err != nil {
+		// 	return err
+		// }
+
 		// 初始化 Http 控制器
-		blogHttpHandler := api.NewHandler(blogServer)
-		commentHttpHandler := api2.NewHandler(commentServer)
+		// blogHttpHandler := api.NewHandler(blogServer)
+		// commentHttpHandler := api2.NewHandler(commentServer)
 
 		// 创建 Gin 路由引擎
 		routerEngine := gin.Default()
 
 		// 注册路由
-		blogHttpHandler.Registry(routerEngine)
-		commentHttpHandler.Registry(routerEngine)
+		// blogHttpHandler.Registry(routerEngine)
+		// commentHttpHandler.Registry(routerEngine)
+
+		// 初始化 ioc 管理的所有对象(包括业务对象和handler对象)
+		ioc.Container().Init(routerEngine)
 
 		// 创建 Http 服务端
 		httpServer := protocal.NewHttp(routerEngine)
+
 		// 启动服务
 		if err := httpServer.Start(); err != nil {
 			return err

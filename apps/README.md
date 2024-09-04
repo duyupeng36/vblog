@@ -13,7 +13,7 @@ DDD 模式是 **领域驱动开发**（Domain-Driven-Develop），一个 **领�
 ```shell
 .
 ├── apps
-│   ├── README.md
+│   ├── README.md.md
 │   ├── blog
 │   │   ├── api          # 业务服务接口
 │   │   │   ├── blog.go

@@ -13,7 +13,7 @@ const (
 	StatusStoreError  = 400 // 入库失败
 )
 
-func (i *Impl) CreateComment(ctx context.Context, body *comment.Body) (*comment.Comment, error) {
+func (i *impl) CreateComment(ctx context.Context, body *comment.Body) (*comment.Comment, error) {
 
 	// 校验用户提供的参数
 	if err := utils.Validate(body); err != nil {
@@ -32,18 +32,18 @@ func (i *Impl) CreateComment(ctx context.Context, body *comment.Body) (*comment.
 	return ins, nil
 }
 
-func (i *Impl) QueryComment(ctx context.Context, request *comment.QueryCommentRequest) (*comment.CommentSet, error) {
+func (i *impl) QueryComment(ctx context.Context, request *comment.QueryCommentRequest) (*comment.CommentSet, error) {
 	return nil, nil
 }
 
-func (i *Impl) DescribeComment(ctx context.Context, request *comment.DescribeCommentRequest) (*comment.Comment, error) {
+func (i *impl) DescribeComment(ctx context.Context, request *comment.DescribeCommentRequest) (*comment.Comment, error) {
 	return nil, nil
 }
 
-func (i *Impl) UpdateComment(ctx context.Context, request *comment.UpdateCommentRequest) (*comment.Comment, error) {
+func (i *impl) UpdateComment(ctx context.Context, request *comment.UpdateCommentRequest) (*comment.Comment, error) {
 	return nil, nil
 }
 
-func (i *Impl) DeleteComment(ctx context.Context, request *comment.DeleteCommentRequest) (*comment.Comment, error) {
+func (i *impl) DeleteComment(ctx context.Context, request *comment.DeleteCommentRequest) (*comment.Comment, error) {
 	return nil, nil
 }

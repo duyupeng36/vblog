@@ -14,7 +14,7 @@ const (
 )
 
 // CreateBlog 创建博客
-func (i *Impl) CreateBlog(ctx context.Context, body *blog.Body) (*blog.Blog, error) {
+func (i *impl) CreateBlog(ctx context.Context, body *blog.Body) (*blog.Blog, error) {
 	// 验证请求参数
 	if err := body.Validate(); err != nil {
 		return nil, utils.NewAPIError(StatusParamsError, err.Error()).SetHttpStatus(http.StatusBadRequest)
@@ -44,21 +44,21 @@ func (i *Impl) CreateBlog(ctx context.Context, body *blog.Body) (*blog.Blog, err
 }
 
 // QueryBlog 获取文章列表
-func (i *Impl) QueryBlog(context.Context, *blog.QueryBlogRequest) (*blog.BlogSet, error) {
+func (i *impl) QueryBlog(context.Context, *blog.QueryBlogRequest) (*blog.BlogSet, error) {
 	return nil, nil
 }
 
 // DescribeBlog 获取一篇博客
-func (i *Impl) DescribeBlog(context.Context, *blog.DescribeBlogRequest) (*blog.Blog, error) {
+func (i *impl) DescribeBlog(context.Context, *blog.DescribeBlogRequest) (*blog.Blog, error) {
 	return nil, nil
 }
 
 // UpdateBlog 修改一篇博客
-func (i *Impl) UpdateBlog(context.Context, *blog.UpdateBlogRequest) (*blog.Blog, error) {
+func (i *impl) UpdateBlog(context.Context, *blog.UpdateBlogRequest) (*blog.Blog, error) {
 	return nil, nil
 }
 
 // DeleteBlog 删除博客，返回删除的对象，用于前端展示或对象最终
-func (i *Impl) DeleteBlog(context.Context, *blog.DeleteBlogRequest) (*blog.Blog, error) {
+func (i *impl) DeleteBlog(context.Context, *blog.DeleteBlogRequest) (*blog.Blog, error) {
 	return nil, nil
 }
