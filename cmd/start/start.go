@@ -3,6 +3,8 @@ package start
 import (
 	"vblog/apps/blog/api"
 	"vblog/apps/blog/impl"
+	api2 "vblog/apps/comment/api"
+	impl2 "vblog/apps/comment/impl"
 	"vblog/conf"
 	"vblog/protocal"
 
@@ -36,12 +38,20 @@ var Cmd = &cobra.Command{
 		if err != nil {
 			return err
 		}
+		commentServer, err := impl2.NewCommentService()
+		if err != nil {
+			return err
+		}
 		// 初始化 Http 控制器
-		blogHtppHandler := api.NewHandler(blogServer)
+		blogHttpHandler := api.NewHandler(blogServer)
+		commentHttpHandler := api2.NewHandler(commentServer)
+
 		// 创建 Gin 路由引擎
 		routerEngine := gin.Default()
+
 		// 注册路由
-		blogHtppHandler.Registry(routerEngine)
+		blogHttpHandler.Registry(routerEngine)
+		commentHttpHandler.Registry(routerEngine)
 
 		// 创建 Http 服务端
 		httpServer := protocal.NewHttp(routerEngine)

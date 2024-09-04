@@ -1,4 +1,4 @@
-package conf
+package http
 
 import "fmt"
 
@@ -9,7 +9,8 @@ type Http struct {
 	WriteTimeout int    `json:"writeTimeout" toml:"writeTimeout" env:"HTTP_WRITETIMEOUT"`
 }
 
-func defaultHttp() *Http {
+// Default 提供 HTTP 服务的默认配置
+func Default() *Http {
 	return &Http{
 		Host:         "localhost",
 		Port:         8080,
@@ -18,6 +19,7 @@ func defaultHttp() *Http {
 	}
 }
 
+// Addr 获取服务监听的地址和端口
 func (h *Http) Addr() string {
 	return fmt.Sprintf("%s:%d", h.Host, h.Port)
 }

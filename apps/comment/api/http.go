@@ -25,5 +25,5 @@ type Handler struct {
 func (h *Handler) Registry(r gin.IRouter) {
 
 	// 注册 路由
-	r.GET("/vblog/api/v1/comments", h.CreateComment)
+	r.POST("/vblog/api/v1/comments", h.CreateComment)
 }

@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"time"
 	"vblog/conf"
+	"vblog/logger"
 
 	"github.com/gin-gonic/gin"
 )
@@ -30,6 +31,7 @@ func NewHttp(r *gin.Engine) *Http {
 // Start 启动服务
 func (h *Http) Start() error {
 	// 启动http服务
+	logger.Logger().Info().Msgf("start http server at %s", h.server.Addr)
 	return h.server.ListenAndServe()
 }
 

@@ -3,13 +3,15 @@ package conf
 import (
 	"encoding/json"
 	"log"
+	"vblog/conf/http"
+	"vblog/conf/mysql"
 )
 
 var (
 	config *Config // 全局配置对象
 )
 
-// 获取全局配置
+// C 获取全局配置
 func C() *Config {
 
 	if config == nil {
@@ -19,15 +21,15 @@ func C() *Config {
 }
 
 type Config struct {
-	MySQL *MySQL `toml:"mysql" json:"mysql"`
-	Http  *Http  `json:"http" toml:"http"`
+	MySQL *mysql.MySQL `toml:"mysql" json:"mysql"`
+	Http  *http.Http   `json:"http" toml:"http"`
 }
 
 // DefaultConfig 返回一个据哟默认配置的 Config 对象
 func DefaultConfig() *Config {
 	return &Config{
-		MySQL: defaultMySQL(),
-		Http:  defaultHttp(),
+		MySQL: mysql.Default(),
+		Http:  http.Default(),
 	}
 }
 

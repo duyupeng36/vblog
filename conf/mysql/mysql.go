@@ -1,4 +1,4 @@
-package conf
+package mysql
 
 import (
 	"context"
@@ -33,8 +33,8 @@ type MySQL struct {
 	db   *gorm.DB // db: 保存连接对象
 }
 
-// defaultMySQL 返回具有默认值 MySQL 配置对象
-func defaultMySQL() *MySQL {
+// Default 返回具有默认值 MySQL 配置对象
+func Default() *MySQL {
 	return &MySQL{
 		Host:            "localhost",
 		Port:            3306,
@@ -79,8 +79,8 @@ func (m *MySQL) GetConnPool() (*sql.DB, error) {
 		db.SetConnMaxIdleTime(time.Second * time.Duration(m.MaxIdleTime))
 	}
 
-	ctx, cancle := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancle()
+	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel()
 
 	// ping 检测。检查 MySQL Server 是否可用
 	if err := db.PingContext(ctx); err != nil {

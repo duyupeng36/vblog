@@ -5,7 +5,7 @@ import "context"
 // 博客管理的业务接口声明
 
 type Service interface {
-	CreateComment(ctx context.Context, comment *Comment) (*Comment, error)
+	CreateComment(ctx context.Context, body *Body) (*Comment, error)
 	QueryComment(ctx context.Context, request *QueryCommentRequest) (*CommentSet, error)
 	DescribeComment(ctx context.Context, request *DescribeCommentRequest) (*Comment, error)
 	UpdateComment(ctx context.Context, request *UpdateCommentRequest) (*Comment, error)

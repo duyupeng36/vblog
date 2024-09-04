@@ -16,7 +16,7 @@ func (h *Handler) CreateBlog(ctx *gin.Context) {
 	if err := ctx.BindJSON(body); err != nil {
 		// 处理异常
 		ctx.JSON(http.StatusBadRequest, utils.NewAPIError(http.StatusBadRequest, err.Error()))
-
+		return
 	}
 
 	// 和业务有关了
@@ -27,6 +27,7 @@ func (h *Handler) CreateBlog(ctx *gin.Context) {
 		} else {
 			ctx.JSON(http.StatusInternalServerError, utils.NewAPIError(http.StatusInternalServerError, err.Error()))
 		}
+		return
 	}
 
 	// 调用业务的 CreateBlog
@@ -38,6 +39,7 @@ func (h *Handler) CreateBlog(ctx *gin.Context) {
 		} else {
 			ctx.JSON(http.StatusInternalServerError, utils.NewAPIError(http.StatusInternalServerError, err.Error()))
 		}
+		return
 	}
 
 	ctx.JSON(http.StatusOK, ins)
