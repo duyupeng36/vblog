@@ -52,6 +52,7 @@ type UpdateBlogRequest struct {
 
 // DescribeBlogRequest 查询一篇博客的请求结构体
 type DescribeBlogRequest struct {
+	Id int // blog id
 }
 
 // DeleteBlogRequest 删除一篇博客的请求结构体

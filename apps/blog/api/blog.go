@@ -77,3 +77,25 @@ func (h *Handler) QueryBlog(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, set)
 }
+
+func (h *Handler) DescribeBlog(ctx *gin.Context) {
+	in := &blog.DescribeBlogRequest{}
+
+	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, utils.NewAPIError(http.StatusBadRequest, err.Error()))
+	}
+	in.Id = int(id)
+
+	ins, err := h.svc.DescribeBlog(ctx, in)
+	if err != nil {
+		// 处理异常
+		if e, ok := err.(*utils.APIError); ok {
+			ctx.JSON(e.HttpStatus, e)
+		} else {
+			ctx.JSON(http.StatusInternalServerError, utils.NewAPIError(http.StatusInternalServerError, err.Error()))
+		}
+		return
+	}
+	ctx.JSON(http.StatusOK, ins)
+}

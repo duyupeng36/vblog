@@ -44,6 +44,7 @@ func (h *Handler) Registry(r gin.IRouter) {
 	// 注册 路由
 	r.POST("/vblog/api/v1/blogs", h.CreateBlog)
 	r.GET("/vblog/api/v1/blogs", h.QueryBlog)
+	r.GET("/vblog/api/v1/blogs/:id", h.DescribeBlog)
 }
 
 func (h *Handler) Name() string {

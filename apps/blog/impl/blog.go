@@ -2,6 +2,7 @@ package impl
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"vblog/apps/blog"
 	"vblog/utils"
@@ -68,8 +69,22 @@ func (i *impl) QueryBlog(ctx context.Context, in *blog.QueryBlogRequest) (*blog.
 }
 
 // DescribeBlog 获取一篇博客
-func (i *impl) DescribeBlog(context.Context, *blog.DescribeBlogRequest) (*blog.Blog, error) {
-	return nil, nil
+func (i *impl) DescribeBlog(ctx context.Context, in *blog.DescribeBlogRequest) (*blog.Blog, error) {
+
+	result := &blog.Blog{}
+
+	// 构建 SQL 语句
+	query := i.db.WithContext(ctx).Model(&blog.Blog{})
+
+	if in.Id == 0 {
+		return nil, utils.NewAPIError(http.StatusBadRequest, fmt.Errorf("query Id must give").Error())
+	}
+
+	if err := query.Take(&result, in.Id).Error; err != nil {
+		return nil, utils.NewAPIError(http.StatusNotFound, err.Error())
+	}
+
+	return result, nil
 }
 
 // UpdateBlog 修改一篇博客
