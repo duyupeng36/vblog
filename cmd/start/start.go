@@ -8,7 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/spf13/cobra"
 
-	_ "vblog/apps" // 导入 apps
+	// 统一导入所有业务实现
+	_ "vblog/apps" // 导入 apps,z执行 apps/registry.go
 )
 
 var configType string

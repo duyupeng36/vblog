@@ -3,5 +3,6 @@
     "go.testFlags": [
         "-count=1",
         "-v"
-    ]
+    ],
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
 }

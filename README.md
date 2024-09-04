@@ -157,8 +157,8 @@ httpServer := protocal.NewHttp(routerEngine)
 
 采用 ioc 之后，业务代码只需要
 1. 先写业务逻辑
-2. 再写api
-3. 通过 import 注册到 ioc 中
+2. 再写接口 RESTful API
+3. 实例注册到 ioc 中
 
 ```go
 package apps
@@ -172,9 +172,9 @@ import (
 )
 ```
 
-4. 启动时导入 `apps` 包
+4. 启动时的时候，注册所有实例：`apps/registry.go`
 
-```go
+```go 
 _ "vblog/apps" // 导入 apps
 ```
 
