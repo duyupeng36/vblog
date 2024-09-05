@@ -48,6 +48,14 @@ func NewQueryBlogRequest() *QueryBlogRequest {
 
 // UpdateBlogRequest 更新博客的请求结构
 type UpdateBlogRequest struct {
+	Id      int
+	Title   string
+	Content string
+	Tags    map[string]string
+}
+
+func NewUpdateBlogRequest() *UpdateBlogRequest {
+	return &UpdateBlogRequest{}
 }
 
 // DescribeBlogRequest 查询一篇博客的请求结构体
@@ -55,6 +63,19 @@ type DescribeBlogRequest struct {
 	Id int // blog id
 }
 
+func NewDescribeBlogRequest(id int) *DescribeBlogRequest {
+	return &DescribeBlogRequest{
+		Id: id,
+	}
+}
+
 // DeleteBlogRequest 删除一篇博客的请求结构体
 type DeleteBlogRequest struct {
+	Id int
+}
+
+func NewDeleteBlogRequest(id int) *DeleteBlogRequest {
+	return &DeleteBlogRequest{
+		Id: id,
+	}
 }
