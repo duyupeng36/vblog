@@ -48,10 +48,10 @@ func NewQueryBlogRequest() *QueryBlogRequest {
 
 // UpdateBlogRequest 更新博客的请求结构
 type UpdateBlogRequest struct {
-	Id      int
-	Title   string
-	Content string
-	Tags    map[string]string
+	Id      int               `json:"id"`
+	Title   string            `json:"title"`
+	Content string            `json:"content"`
+	Tags    map[string]string `json:"tags"`
 }
 
 func NewUpdateBlogRequest() *UpdateBlogRequest {
