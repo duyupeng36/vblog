@@ -93,7 +93,7 @@ func (i *impl) UpdateBlog(ctx context.Context, in *blog.UpdateBlogRequest) (*blo
 
 	ins := blog.NewBlog(blog.NewBody())
 
-	if err := i.db.WithContext(ctx).Model(&blog.Blog{}).Where("id = ?", in.Id).Find(ins).Error; err != nil {
+	if err := i.db.WithContext(ctx).Model(&blog.Blog{}).Where("id = ?", in.Id).Take(ins).Error; err != nil {
 		return nil, utils.NewAPIError(http.StatusNotFound, err.Error())
 	}
 
@@ -125,7 +125,7 @@ func (i *impl) DeleteBlog(ctx context.Context, in *blog.DeleteBlogRequest) (*blo
 	ins := blog.NewBlog(blog.NewBody())
 
 	// 查找文章
-	if err := i.db.Model(&blog.Blog{}).Where("id = ?", in.Id).Find(ins).Error; err != nil {
+	if err := i.db.Model(&blog.Blog{}).Where("id = ?", in.Id).Take(ins).Error; err != nil {
 		return nil, utils.NewAPIError(http.StatusNotFound, err.Error())
 	}
 

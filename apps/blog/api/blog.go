@@ -84,6 +84,7 @@ func (h *Handler) DescribeBlog(ctx *gin.Context) {
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
 		ctx.JSON(http.StatusBadRequest, utils.NewAPIError(http.StatusBadRequest, err.Error()))
+		return
 	}
 	in.Id = int(id)
 
@@ -105,6 +106,7 @@ func (h *Handler) UpdateBlog(ctx *gin.Context) {
 
 	if err := ctx.BindJSON(in); err != nil {
 		ctx.JSON(http.StatusBadRequest, utils.NewAPIError(http.StatusBadRequest, err.Error()))
+		return
 	}
 
 	ins, err := h.svc.UpdateBlog(ctx, in)

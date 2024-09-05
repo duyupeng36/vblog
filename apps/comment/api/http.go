@@ -8,13 +8,6 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// NewHandler 初始化一些基础数据
-// 具体传递那个实现，在程序启动初始化时
-func NewHandler(svc comment.Service) *Handler {
-
-	return &Handler{}
-}
-
 // Handler 负责实现具体的 API
 type Handler struct {
 	// 需要一个业务的具体实现

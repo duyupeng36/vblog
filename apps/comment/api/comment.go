@@ -1,10 +1,11 @@
 package api
 
 import (
-	"github.com/gin-gonic/gin"
 	"net/http"
 	"vblog/apps/comment"
 	"vblog/utils"
+
+	"github.com/gin-gonic/gin"
 )
 
 func (h *Handler) CreateComment(ctx *gin.Context) {
@@ -13,6 +14,7 @@ func (h *Handler) CreateComment(ctx *gin.Context) {
 	// 获取用户传递的参数
 	if err := ctx.BindJSON(body); err != nil {
 		ctx.JSON(http.StatusBadRequest, utils.NewAPIError(http.StatusBadRequest, err.Error()))
+		return
 	}
 
 	// 调用业务接口
