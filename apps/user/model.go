@@ -4,6 +4,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"time"
+	"vblog/utils"
 
 	"github.com/rs/xid"
 	"golang.org/x/crypto/bcrypt"
@@ -61,16 +62,25 @@ func (u *User) BuildHashedPassword() error {
 
 func (u *User) CheckPassword(password string) error {
 
-	hashedPassword, err := base64.StdEncoding.DecodeString(u.Password)
+	bytesHashedPassword, err := base64.StdEncoding.DecodeString(u.Password)
 	if err != nil {
 		return err
 	}
-	return bcrypt.CompareHashAndPassword(hashedPassword, []byte(password))
+	bytesPassword, err := base64.StdEncoding.DecodeString(password)
+	if err != nil {
+		return err
+	}
+
+	return bcrypt.CompareHashAndPassword(bytesHashedPassword, bytesPassword)
 }
 
 type UserInfo struct {
 	Username string `json:"username" validate:"required"`
 	Password string `json:"password" validate:"required"`
+}
+
+func (ui *UserInfo) Validate() error {
+	return utils.Validate(ui)
 }
 
 func NewUserInfo() *UserInfo {

@@ -52,6 +52,10 @@ func (i *impl) DeleteUser(ctx context.Context, in *user.DeleteUserRequest) (*use
 // 登录
 func (i *impl) Login(ctx context.Context, in *user.LoginRequest) (*user.Token, error) {
 
+	if err := in.Validate(); err != nil {
+		return nil, utils.NewAPIError(http.StatusBadRequest, err.Error())
+	}
+
 	ins := user.NewUser(user.NewUserInfo())
 
 	if err := i.db.WithContext(ctx).Model(&user.User{}).Where("username = ?", in.Username).Take(&ins).Error; err != nil {

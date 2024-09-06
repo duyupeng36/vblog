@@ -59,3 +59,7 @@ type CheckTokenRequest struct {
 	Username    string `json:"username"`
 	AccessToken string `json:"access_token"`
 }
+
+func NewCheckTokenRequest() *CheckTokenRequest {
+	return &CheckTokenRequest{}
+}
