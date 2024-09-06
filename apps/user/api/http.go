@@ -4,6 +4,7 @@ import (
 	"errors"
 	"vblog/apps/user"
 	"vblog/ioc"
+	"vblog/protocal/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -26,9 +27,12 @@ func (h *handler) Name() string {
 }
 
 func (h *handler) Registry(r gin.IRouter) {
-	r.POST("/vblog/api/v1/users", h.CreateUser)
-	r.DELETE("/vblog/api/v1/users/:id", h.DeleteUser)
-	r.POST("/vblog/api/v1/users/token", h.Login)
+	r.POST("", h.CreateUser)
+	r.POST("/token", h.Login)
+	auth := r.Group("").Use(middleware.Auth)
+	{
+		auth.DELETE("/:id", h.DeleteUser)
+	}
 }
 
 func init() {

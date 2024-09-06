@@ -77,9 +77,9 @@ func (i *impl) Login(ctx context.Context, in *user.LoginRequest) (*user.Token, e
 
 // CheckToken 检查 Token
 func (i *impl) CheckToken(ctx context.Context, in *user.CheckTokenRequest) (*user.Token, error) {
-	tk := user.NewToken(in.Username)
+	tk := user.NewToken("")
 
-	if err := i.db.WithContext(ctx).Model(&user.Token{}).Where("username = ? AND access_token = ?", in.Username, in.AccessToken).Take(tk).Error; err != nil {
+	if err := i.db.WithContext(ctx).Model(&user.Token{}).Where("access_token = ?", in.AccessToken).Take(tk).Error; err != nil {
 		return nil, utils.NewAPIError(http.StatusNotFound, err.Error())
 	}
 

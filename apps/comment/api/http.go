@@ -4,6 +4,7 @@ import (
 	"errors"
 	"vblog/apps/comment"
 	"vblog/ioc"
+	"vblog/protocal/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -31,9 +32,9 @@ func (h *Handler) Name() string {
 // 还需要将 API 与 HTTP 路由对应上
 
 func (h *Handler) Registry(r gin.IRouter) {
-
+	r.Use(middleware.Auth)
 	// 注册 路由
-	r.POST("/vblog/api/v1/comments", h.CreateComment)
+	r.POST("", h.CreateComment)
 }
 
 func init() {

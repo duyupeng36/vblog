@@ -4,6 +4,7 @@ import (
 	"errors"
 	"vblog/apps/blog"
 	"vblog/ioc"
+	"vblog/protocal/middleware"
 
 	"github.com/gin-gonic/gin"
 )
@@ -37,13 +38,16 @@ func (h *handler) Init() error {
 
 // Registry 将 API 与 HTTP 路由对应上
 func (h *handler) Registry(r gin.IRouter) {
+	r.GET("", h.QueryBlog)
 
-	// 注册 路由
-	r.POST("/vblog/api/v1/blogs", h.CreateBlog)
-	r.GET("/vblog/api/v1/blogs", h.QueryBlog)
-	r.GET("/vblog/api/v1/blogs/:id", h.DescribeBlog)
-	r.PATCH("/vblog/api/v1/blogs", h.UpdateBlog)
-	r.DELETE("/vblog/api/v1/blogs/:id", h.DeleteBlog)
+	auth := r.Group("").Use(middleware.Auth)
+	{
+		// 注册 路由
+		auth.POST("", h.CreateBlog)
+		auth.GET("/:id", h.DescribeBlog)
+		auth.PATCH("", h.UpdateBlog)
+		auth.DELETE("/:id", h.DeleteBlog)
+	}
 }
 
 func (h *handler) Name() string {

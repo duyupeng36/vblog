@@ -1,6 +1,7 @@
 package ioc
 
 import (
+	"net/url"
 	"sync"
 
 	"github.com/gin-gonic/gin"
@@ -45,12 +46,14 @@ func (i *ioc) Init(r gin.IRouter) error {
 		}
 	}
 
-	for _, v := range i.handler {
+	for k, v := range i.handler {
 		if err := v.Init(); err != nil {
 			return err
 		}
 		if r != nil {
-			v.Registry(r)
+			uri, _ := url.JoinPath("/vblog/api/v1", k)
+
+			v.Registry(r.Group(uri))
 		}
 	}
 	return nil

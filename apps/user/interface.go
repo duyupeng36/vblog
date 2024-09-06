@@ -56,10 +56,11 @@ func NewLoginRequest() *LoginRequest {
 }
 
 type CheckTokenRequest struct {
-	Username    string `json:"username"`
 	AccessToken string `json:"access_token"`
 }
 
-func NewCheckTokenRequest() *CheckTokenRequest {
-	return &CheckTokenRequest{}
+func NewCheckTokenRequest(token string) *CheckTokenRequest {
+	return &CheckTokenRequest{
+		AccessToken: token,
+	}
 }

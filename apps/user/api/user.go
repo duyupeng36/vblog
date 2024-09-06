@@ -68,7 +68,7 @@ func (h *handler) Login(ctx *gin.Context) {
 		return
 	}
 
-	ctx.SetCookie("cookie", tk.AccessToken, 3600*12, "/", ctx.Request.Host, false, false)
+	ctx.SetCookie(user.AUTOH_COOKIE_NAME, tk.AccessToken, 3600*12, "/", ctx.Request.Host, false, false)
 
 	ctx.JSON(http.StatusOK, tk)
 }

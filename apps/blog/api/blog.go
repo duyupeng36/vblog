@@ -4,6 +4,7 @@ import (
 	"net/http"
 	"strconv"
 	"vblog/apps/blog"
+	"vblog/apps/user"
 	"vblog/utils"
 
 	"github.com/gin-gonic/gin"
@@ -11,17 +12,25 @@ import (
 
 func (h *handler) CreateBlog(ctx *gin.Context) {
 
-	body := blog.NewBody()
+	in := blog.NewBody()
 
 	// 这和业务无关的错误
-	if err := ctx.BindJSON(body); err != nil {
+	if err := ctx.BindJSON(in); err != nil {
 		// 处理异常
 		ctx.JSON(http.StatusBadRequest, utils.NewAPIError(http.StatusBadRequest, err.Error()))
 		return
 	}
 
+	//  获取用户
+	tk, ok := ctx.Get(user.REQUEST_CTX_TOKEN_NAME)
+	if !ok {
+		ctx.JSON(http.StatusUnauthorized, utils.NewAPIError(http.StatusUnauthorized, "please login"))
+	}
+
+	in.Author = tk.(*user.Token).Username
+
 	// 和业务有关了
-	if err := body.Validate(); err != nil {
+	if err := in.Validate(); err != nil {
 		// 处理异常
 		if e, ok := err.(*utils.APIError); ok {
 			ctx.JSON(e.HttpStatus, e)
@@ -32,7 +41,7 @@ func (h *handler) CreateBlog(ctx *gin.Context) {
 	}
 
 	// 调用业务的 CreateBlog
-	ins, err := h.svc.CreateBlog(ctx.Request.Context(), body)
+	ins, err := h.svc.CreateBlog(ctx.Request.Context(), in)
 	if err != nil {
 		// 处理异常
 		if e, ok := err.(*utils.APIError); ok {

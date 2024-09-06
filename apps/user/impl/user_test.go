@@ -43,10 +43,7 @@ func TestLogin(t *testing.T) {
 }
 
 func TestCheckToken(t *testing.T) {
-	in := &user.CheckTokenRequest{
-		Username:    "admin",
-		AccessToken: "crcsi4vdunf70l6hqb60",
-	}
+	in := user.NewCheckTokenRequest("crd70cfdunf7ut2el37g")
 
 	tk, err := controller.CheckToken(ctx, in)
 	if err != nil {
