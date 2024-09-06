@@ -66,12 +66,8 @@ func (u *User) CheckPassword(password string) error {
 	if err != nil {
 		return err
 	}
-	bytesPassword, err := base64.StdEncoding.DecodeString(password)
-	if err != nil {
-		return err
-	}
 
-	return bcrypt.CompareHashAndPassword(bytesHashedPassword, bytesPassword)
+	return bcrypt.CompareHashAndPassword(bytesHashedPassword, []byte(password))
 }
 
 type UserInfo struct {

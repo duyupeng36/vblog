@@ -1,5 +1,5 @@
 [mysql]
-host="127.0.0.1"
+host="47.102.121.111"
 port=3306
 database="vblog"
 username="vblog"

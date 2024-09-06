@@ -9,7 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func (h *Handler) CreateBlog(ctx *gin.Context) {
+func (h *handler) CreateBlog(ctx *gin.Context) {
 
 	body := blog.NewBody()
 
@@ -46,7 +46,7 @@ func (h *Handler) CreateBlog(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, ins)
 }
 
-func (h *Handler) QueryBlog(ctx *gin.Context) {
+func (h *handler) QueryBlog(ctx *gin.Context) {
 	in := blog.NewQueryBlogRequest()
 
 	// GET 请求，从 url query 中获取参数
@@ -78,7 +78,7 @@ func (h *Handler) QueryBlog(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, set)
 }
 
-func (h *Handler) DescribeBlog(ctx *gin.Context) {
+func (h *handler) DescribeBlog(ctx *gin.Context) {
 	in := &blog.DescribeBlogRequest{}
 
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
@@ -101,7 +101,7 @@ func (h *Handler) DescribeBlog(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, ins)
 }
 
-func (h *Handler) UpdateBlog(ctx *gin.Context) {
+func (h *handler) UpdateBlog(ctx *gin.Context) {
 	in := blog.NewUpdateBlogRequest()
 
 	if err := ctx.BindJSON(in); err != nil {
@@ -122,7 +122,7 @@ func (h *Handler) UpdateBlog(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, ins)
 }
 
-func (h *Handler) DeleteBlog(ctx *gin.Context) {
+func (h *handler) DeleteBlog(ctx *gin.Context) {
 
 	id, _ := strconv.Atoi(ctx.Param("id"))
 	in := blog.NewDeleteBlogRequest(id)

@@ -75,7 +75,7 @@ func (i *impl) Login(ctx context.Context, in *user.LoginRequest) (*user.Token, e
 	return tk, nil
 }
 
-// 检查 Token
+// CheckToken 检查 Token
 func (i *impl) CheckToken(ctx context.Context, in *user.CheckTokenRequest) (*user.Token, error) {
 	tk := user.NewToken(in.Username)
 

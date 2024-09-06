@@ -55,7 +55,10 @@ var Cmd = &cobra.Command{
 		// commentHttpHandler.Registry(routerEngine)
 
 		// 初始化 ioc 管理的所有对象(包括业务对象和handler对象)
-		ioc.Container().Init(routerEngine)
+		err := ioc.Container().Init(routerEngine)
+		if err != nil {
+			return err
+		}
 
 		// 创建 Http 服务端
 		httpServer := protocal.NewHttp(routerEngine)

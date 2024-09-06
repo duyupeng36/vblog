@@ -27,7 +27,7 @@ func (h *handler) Name() string {
 
 func (h *handler) Registry(r gin.IRouter) {
 	r.POST("/vblog/api/v1/users", h.CreateUser)
-	r.DELETE("/vblog/api/v1/users", h.DeleteUser)
+	r.DELETE("/vblog/api/v1/users/:id", h.DeleteUser)
 	r.POST("/vblog/api/v1/users/token", h.Login)
 }
 
