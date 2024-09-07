@@ -2,22 +2,16 @@ package impl
 
 import (
 	"context"
-	"net/http"
 	"vblog/apps/comment"
 	"vblog/utils"
-)
-
-const (
-	StatusOK          = 200 // 正常
-	StatusParamsError = 300 // 请求参数错误
-	StatusStoreError  = 400 // 入库失败
+	"vblog/utils/errors"
 )
 
 func (i *impl) CreateComment(ctx context.Context, body *comment.Body) (*comment.Comment, error) {
 
 	// 校验用户提供的参数
 	if err := utils.Validate(body); err != nil {
-		return nil, utils.NewAPIError(StatusParamsError, err.Error()).SetHttpStatus(http.StatusBadRequest)
+		return nil, errors.NewBadRequestError(err.Error())
 	}
 
 	// 校验成功，创建一个 Comment 对象
@@ -26,7 +20,7 @@ func (i *impl) CreateComment(ctx context.Context, body *comment.Body) (*comment.
 	// 入库
 
 	if err := i.db.Create(ins).Error; err != nil {
-		return nil, utils.NewAPIError(StatusStoreError, err.Error()).SetHttpStatus(http.StatusInternalServerError)
+		return nil, err
 	}
 
 	return ins, nil

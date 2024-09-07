@@ -1,9 +1,9 @@
 package api
 
 import (
-	"net/http"
 	"vblog/apps/comment"
-	"vblog/utils"
+	"vblog/utils/errors"
+	"vblog/utils/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -13,20 +13,15 @@ func (h *Handler) CreateComment(ctx *gin.Context) {
 
 	// 获取用户传递的参数
 	if err := ctx.BindJSON(body); err != nil {
-		ctx.JSON(http.StatusBadRequest, utils.NewAPIError(http.StatusBadRequest, err.Error()))
+		response.SendFailed(ctx, errors.NewBadRequestError(err.Error()))
 		return
 	}
 
 	// 调用业务接口
 	ins, err := h.svc.CreateComment(ctx, body)
 	if err != nil {
-		if e, ok := err.(*utils.APIError); ok {
-			ctx.JSON(e.HttpStatus, e)
-		} else {
-			ctx.JSON(http.StatusInternalServerError, utils.NewAPIError(http.StatusInternalServerError, err.Error()))
-		}
+		response.SendFailed(ctx, err)
 		return
 	}
-
-	ctx.JSON(http.StatusOK, ins)
+	response.SendSuccess(ctx, ins)
 }

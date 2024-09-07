@@ -2,24 +2,16 @@ package impl
 
 import (
 	"context"
-	"fmt"
-	"net/http"
 	"time"
 	"vblog/apps/blog"
-	"vblog/utils"
-)
-
-const (
-	StatusOK          = 200 // 正常
-	StatusParamsError = 300 // 请求参数错误
-	StatusStoreError  = 400 // 入库失败
+	"vblog/utils/errors"
 )
 
 // CreateBlog 创建博客
 func (i *impl) CreateBlog(ctx context.Context, in *blog.Body) (*blog.Blog, error) {
 	// 验证请求参数
 	if err := in.Validate(); err != nil {
-		return nil, utils.NewAPIError(StatusParamsError, err.Error()).SetHttpStatus(http.StatusBadRequest)
+		return nil, errors.NewBadRequestError(err.Error())
 	}
 
 	// 验证成功
@@ -39,7 +31,7 @@ func (i *impl) CreateBlog(ctx context.Context, in *blog.Body) (*blog.Blog, error
 	// ctx 就是通知 orm 取消这个数据库操作的
 	// i.db.Create(ins)
 	if err := i.db.WithContext(ctx).Create(ins).Error; err != nil {
-		return nil, utils.NewAPIError(StatusStoreError, err.Error()).SetHttpStatus(http.StatusInternalServerError)
+		return nil, err
 	}
 
 	return ins, nil
@@ -63,7 +55,7 @@ func (i *impl) QueryBlog(ctx context.Context, in *blog.QueryBlogRequest) (*blog.
 
 	// 分页
 	if err := query.Count(&set.Total).Offset(in.Offset()).Limit(in.PageSize).Find(&set.Items).Error; err != nil {
-		return nil, utils.NewAPIError(http.StatusBadRequest, err.Error())
+		return nil, errors.NewNotFoundError(err.Error())
 	}
 
 	return set, nil
@@ -72,17 +64,17 @@ func (i *impl) QueryBlog(ctx context.Context, in *blog.QueryBlogRequest) (*blog.
 // DescribeBlog 获取一篇博客
 func (i *impl) DescribeBlog(ctx context.Context, in *blog.DescribeBlogRequest) (*blog.Blog, error) {
 
+	if in.Id == 0 {
+		return nil, errors.NewBadRequestError("Blog ID is required")
+	}
+
 	result := blog.NewBlog(blog.NewBody())
 
 	// 构建 SQL 语句
 	query := i.db.WithContext(ctx).Model(&blog.Blog{})
 
-	if in.Id == 0 {
-		return nil, utils.NewAPIError(http.StatusBadRequest, fmt.Errorf("query Id must give").Error())
-	}
-
 	if err := query.Take(&result, in.Id).Error; err != nil {
-		return nil, utils.NewAPIError(http.StatusNotFound, err.Error())
+		return nil, errors.NewNotFoundError(err.Error())
 	}
 
 	return result, nil
@@ -94,7 +86,7 @@ func (i *impl) UpdateBlog(ctx context.Context, in *blog.UpdateBlogRequest) (*blo
 	ins := blog.NewBlog(blog.NewBody())
 
 	if err := i.db.WithContext(ctx).Model(&blog.Blog{}).Where("id = ?", in.Id).Take(ins).Error; err != nil {
-		return nil, utils.NewAPIError(http.StatusNotFound, err.Error())
+		return nil, errors.NewNotFoundError(err.Error())
 	}
 
 	if in.Title != "" {
@@ -113,7 +105,7 @@ func (i *impl) UpdateBlog(ctx context.Context, in *blog.UpdateBlogRequest) (*blo
 	ins.CreatedAt = 0
 
 	if err := i.db.WithContext(ctx).Model(&blog.Blog{}).Where("id = ?", in.Id).Updates(ins).Error; err != nil {
-		return nil, utils.NewAPIError(http.StatusInternalServerError, err.Error())
+		return nil, err
 	}
 
 	return ins, nil
@@ -126,11 +118,11 @@ func (i *impl) DeleteBlog(ctx context.Context, in *blog.DeleteBlogRequest) (*blo
 
 	// 查找文章
 	if err := i.db.Model(&blog.Blog{}).Where("id = ?", in.Id).Take(ins).Error; err != nil {
-		return nil, utils.NewAPIError(http.StatusNotFound, err.Error())
+		return nil, errors.NewNotFoundError(err.Error())
 	}
 
 	if err := i.db.Unscoped().Delete(ins).Error; err != nil {
-		return nil, utils.NewAPIError(http.StatusInternalServerError, err.Error())
+		return nil, err
 	}
 
 	return ins, nil

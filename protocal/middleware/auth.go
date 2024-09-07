@@ -1,11 +1,11 @@
 package middleware
 
 import (
-	"net/http"
 	"vblog/apps/user"
 	"vblog/ioc"
 	"vblog/logger"
-	"vblog/utils"
+	"vblog/utils/errors"
+	"vblog/utils/response"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,8 +17,7 @@ func Auth(c *gin.Context) {
 
 	tkString, err := c.Cookie(user.AUTOH_COOKIE_NAME)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, utils.NewAPIError(http.StatusUnauthorized, err.Error()))
-		c.AbortWithStatus(http.StatusUnauthorized)
+		response.SendFailed(c, errors.NewUnauthorizedError("Not Login, please login first"))
 		return
 	}
 
@@ -27,8 +26,7 @@ func Auth(c *gin.Context) {
 
 	tk, err := controller.CheckToken(c.Request.Context(), user.NewCheckTokenRequest(tkString))
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, err)
-		c.AbortWithStatus(http.StatusUnauthorized)
+		response.SendFailed(c, errors.NewUnauthorizedError("Not Login, please login first"))
 		return
 	}
 	// 3. 把 User 对象放入 gin.Context 中。后续的接口可能需要从 上下文中获取用户

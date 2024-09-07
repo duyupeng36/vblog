@@ -1,98 +1,73 @@
 package api
 
 import (
-	"net/http"
 	"strconv"
 	"vblog/apps/blog"
 	"vblog/apps/user"
-	"vblog/utils"
+	"vblog/utils/errors"
+	"vblog/utils/response"
 
 	"github.com/gin-gonic/gin"
 )
 
+// CreateBlog 创建博客：/vblog/api/v1/blogs
+// POST 方法
 func (h *handler) CreateBlog(ctx *gin.Context) {
 
 	in := blog.NewBody()
 
 	// 这和业务无关的错误
 	if err := ctx.BindJSON(in); err != nil {
-		// 处理异常
-		ctx.JSON(http.StatusBadRequest, utils.NewAPIError(http.StatusBadRequest, err.Error()))
+		response.SendFailed(ctx, errors.NewBadRequestError(err.Error()))
 		return
 	}
 
 	//  获取用户
 	tk, ok := ctx.Get(user.REQUEST_CTX_TOKEN_NAME)
 	if !ok {
-		ctx.JSON(http.StatusUnauthorized, utils.NewAPIError(http.StatusUnauthorized, "please login"))
+		response.SendFailed(ctx, errors.NewUnauthorizedError("Not LOGIN, please Login first"))
+		return
 	}
 
 	in.Author = tk.(*user.Token).Username
-
-	// 和业务有关了
-	if err := in.Validate(); err != nil {
-		// 处理异常
-		if e, ok := err.(*utils.APIError); ok {
-			ctx.JSON(e.HttpStatus, e)
-		} else {
-			ctx.JSON(http.StatusInternalServerError, utils.NewAPIError(http.StatusInternalServerError, err.Error()))
-		}
-		return
-	}
 
 	// 调用业务的 CreateBlog
 	ins, err := h.svc.CreateBlog(ctx.Request.Context(), in)
 	if err != nil {
 		// 处理异常
-		if e, ok := err.(*utils.APIError); ok {
-			ctx.JSON(e.HttpStatus, e)
-		} else {
-			ctx.JSON(http.StatusInternalServerError, utils.NewAPIError(http.StatusInternalServerError, err.Error()))
-		}
+		response.SendFailed(ctx, err)
 		return
 	}
 
-	ctx.JSON(http.StatusOK, ins)
+	response.SendSuccess(ctx, ins)
 }
 
+// QueryBlog 查询博客：/vblog/api/v1/blogs
+// GET 方法，使用 query 参数
 func (h *handler) QueryBlog(ctx *gin.Context) {
 	in := blog.NewQueryBlogRequest()
-
-	// GET 请求，从 url query 中获取参数
-	pageSize, err := strconv.ParseInt(ctx.DefaultQuery("pageSize", "20"), 10, 64)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, utils.NewAPIError(http.StatusBadRequest, err.Error()))
+	if err := ctx.BindQuery(in); err != nil {
+		response.SendFailed(ctx, errors.NewBadRequestError(err.Error()))
+		return
 	}
-	in.PageSize = int(pageSize)
-
-	pageNumber, err := strconv.ParseInt(ctx.DefaultQuery("pageNumber", "1"), 10, 64)
-	if err != nil {
-		ctx.JSON(http.StatusBadRequest, utils.NewAPIError(http.StatusBadRequest, err.Error()))
-	}
-	in.PageNumber = int(pageNumber)
-
-	in.Author = ctx.Query("author")
-	in.Keywords = ctx.Query("keyword")
 
 	set, err := h.svc.QueryBlog(ctx, in)
 	if err != nil {
 		// 处理异常
-		if e, ok := err.(*utils.APIError); ok {
-			ctx.JSON(e.HttpStatus, e)
-		} else {
-			ctx.JSON(http.StatusInternalServerError, utils.NewAPIError(http.StatusInternalServerError, err.Error()))
-		}
+		response.SendFailed(ctx, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, set)
+	response.SendSuccess(ctx, set)
 }
 
+// DescribeBlog 获取博客详情：/vblog/api/v1/blogs/:id
+// GET 方法
 func (h *handler) DescribeBlog(ctx *gin.Context) {
-	in := &blog.DescribeBlogRequest{}
+	in := blog.NewDescribeBlogRequest(0)
 
 	id, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
 	if err != nil {
-		ctx.JSON(http.StatusBadRequest, utils.NewAPIError(http.StatusBadRequest, err.Error()))
+		response.SendFailed(ctx, errors.NewBadRequestError(err.Error()))
 		return
 	}
 	in.Id = int(id)
@@ -100,51 +75,48 @@ func (h *handler) DescribeBlog(ctx *gin.Context) {
 	ins, err := h.svc.DescribeBlog(ctx, in)
 	if err != nil {
 		// 处理异常
-		if e, ok := err.(*utils.APIError); ok {
-			ctx.JSON(e.HttpStatus, e)
-		} else {
-			ctx.JSON(http.StatusInternalServerError, utils.NewAPIError(http.StatusInternalServerError, err.Error()))
-		}
+		response.SendFailed(ctx, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, ins)
+	response.SendSuccess(ctx, ins)
 }
 
+// UpdateBlog 更新博客：/vblog/api/v1/blogs
+// 使用 PATCH 方法
 func (h *handler) UpdateBlog(ctx *gin.Context) {
 	in := blog.NewUpdateBlogRequest()
 
 	if err := ctx.BindJSON(in); err != nil {
-		ctx.JSON(http.StatusBadRequest, utils.NewAPIError(http.StatusBadRequest, err.Error()))
+		response.SendFailed(ctx, err)
 		return
 	}
 
 	ins, err := h.svc.UpdateBlog(ctx, in)
 	if err != nil {
 		// 处理异常
-		if e, ok := err.(*utils.APIError); ok {
-			ctx.JSON(e.HttpStatus, e)
-		} else {
-			ctx.JSON(http.StatusInternalServerError, utils.NewAPIError(http.StatusInternalServerError, err.Error()))
-		}
+		response.SendFailed(ctx, err)
 		return
 	}
-	ctx.JSON(http.StatusOK, ins)
+	response.SendSuccess(ctx, ins)
 }
 
+// DeleteBlog 删除博客 /vblog/api/v1/blogs/:id
+// DELETE 方法
 func (h *handler) DeleteBlog(ctx *gin.Context) {
 
-	id, _ := strconv.Atoi(ctx.Param("id"))
+	id, err := strconv.Atoi(ctx.Param("id"))
+
+	if err != nil {
+		response.SendFailed(ctx, errors.NewBadRequestError(err.Error()))
+		return
+	}
+
 	in := blog.NewDeleteBlogRequest(id)
 
 	ins, err := h.svc.DeleteBlog(ctx, in)
 	if err != nil {
 		// 处理异常
-		if e, ok := err.(*utils.APIError); ok {
-			ctx.JSON(e.HttpStatus, e)
-		} else {
-			ctx.JSON(http.StatusInternalServerError, utils.NewAPIError(http.StatusInternalServerError, err.Error()))
-		}
 		return
 	}
-	ctx.JSON(http.StatusOK, ins)
+	response.SendSuccess(ctx, ins)
 }
