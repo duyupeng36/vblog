@@ -91,8 +91,8 @@ vblog   # 项目目录
 ├── docs
 ├── etc                        # 配置文件
 │   ├── README.md.md
-│   ├── config.env
-│   ├── config.example.env
+│   ├── config.env.example
+│   ├── config.env.example.example
 │   ├── config.toml
 │   └── unit_test.env
 ├── go.mod

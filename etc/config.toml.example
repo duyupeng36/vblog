@@ -1,0 +1,15 @@
+[mysql]
+host="47.102.121.111"
+port=3306
+database="vblog"
+username="vblog"
+password="vblog"
+charset="utf8mb4"
+parseTime=true
+mutilStatements=false
+
+[http]
+host="localhost"
+port=8010
+readTimeout=10
+writeTimeout=10
