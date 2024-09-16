@@ -16,6 +16,7 @@
     "vue-router": "^4.3.3"
   },
   "devDependencies": {
+    "@arco-design/web-vue": "^2.56.2",
     "@rushstack/eslint-patch": "^1.8.0",
     "@vitejs/plugin-vue": "^5.0.5",
     "@vue/eslint-config-prettier": "^9.0.0",
