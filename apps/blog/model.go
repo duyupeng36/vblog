@@ -6,22 +6,6 @@ import (
 	"vblog/utils"
 )
 
-type BlogSet struct {
-	Total int64   `json:"total"`
-	Items []*Blog `json:"items"`
-}
-
-func NewBlogSet() *BlogSet {
-	return &BlogSet{
-		Items: []*Blog{},
-	}
-}
-
-func (set *BlogSet) String() string {
-	b, _ := json.MarshalIndent(set, "", "  ")
-	return string(b)
-}
-
 // Blog 代表文章的数据结构
 type Blog struct {
 	*Meta

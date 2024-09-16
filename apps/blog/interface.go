@@ -2,6 +2,7 @@ package blog
 
 import (
 	"context"
+	"encoding/json"
 )
 
 const (
@@ -44,6 +45,22 @@ func NewQueryBlogRequest() *QueryBlogRequest {
 		PageSize:   20,
 		PageNumber: 1,
 	}
+}
+
+type BlogSet struct {
+	Total int64   `json:"total"`
+	Items []*Blog `json:"items"`
+}
+
+func NewBlogSet() *BlogSet {
+	return &BlogSet{
+		Items: []*Blog{},
+	}
+}
+
+func (set *BlogSet) String() string {
+	b, _ := json.MarshalIndent(set, "", "  ")
+	return string(b)
 }
 
 // UpdateBlogRequest 更新博客的请求结构
