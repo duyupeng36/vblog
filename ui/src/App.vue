@@ -1,6 +1,10 @@
-<script setup></script>
+<script setup>
+import {RouterView} from "vue-router"
+</script>
 
 <template>
+<!-- 这是根页面：所有的页面都需要挂载在 App.vue 中才能呈现出来 -->
+<!--  特别是 Vue Router 的子页面 -->
   <div>
     <a-space>
       <a-button type="primary">Primary</a-button>
@@ -9,8 +13,9 @@
       <a-button type="outline">Outline</a-button>
       <a-button type="text">Text</a-button>
     </a-space>
-    <br>
-    <icon-caret-right />
+
+  <!-- 路由出口：路由匹配到的组件将在这里渲染 -->
+    <RouterView/>
   </div>
 </template>
 

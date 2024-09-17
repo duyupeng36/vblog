@@ -178,9 +178,6 @@ app.mount('#app')
       <a-button type="outline">Outline</a-button>
       <a-button type="text">Text</a-button>
     </a-space>
-      
-  <br>
-  <icon-caret-right />
   </div>
 </template>
 
@@ -221,7 +218,20 @@ app.use(ArcoVueIcon) // 注册 Arco Icon 组件
 app.mount('#app')
 ```
 
-## 错误页面
+## 异常页面
+
+这里我们需要补充 $2$ 种 [异常页面](src/views/README.md)
+
+## 路由
+
+为了切换和展示页面，需要引入 [路由](./src/router/README.md)
+
+
+
+
+
+
+
 
 
 
