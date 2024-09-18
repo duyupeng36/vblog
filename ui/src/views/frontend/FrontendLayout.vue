@@ -5,7 +5,7 @@ import {RouterView} from "vue-router"
 </script>
 
 <template>
-  <div>
+  <div class="frontend-container">
     Frontend
 <!--    前台子路由的页面 -->
     <RouterView></RouterView>

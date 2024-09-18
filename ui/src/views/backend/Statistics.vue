@@ -5,7 +5,7 @@
 <template>
 
   <div>
-    Admin
+    统计信息
   </div>
 
 </template>

@@ -57,9 +57,184 @@ vblog 前端部分需要补充下面两种 **异常视图**
 
 只有视图组件还不能在 Vue 中工作，还需要将异常视图 [注册到路由表中](../router/README.md#注册异常组件的路由)
 
+## 布局
 
 
+### 前台
 
+前台布局模版: [`FrontendLayout.vue`](./frontend/FrontendLayout.vue)
+
+
+### 后台
+
+博客后台使用的布局模版: [`BackendLayout.vue`](./backend/BackendLayout.vue)
+
+这里我们需要使用到侧边栏导航:[Arco Design菜单 Menu](https://arco.design/vue/component/menu)
+
+#### 布局页面
+
+```html
+<script setup>
+
+import {RouterView} from "vue-router"
+
+</script>
+
+<template>
+  <div class="backend-container">
+    <!-- 后台管理：菜单导航区 -->
+    <div class="backend-menu">
+      <a-menu
+          :style="{height:'100%'}"
+          :default-open-keys="['0', '1']"
+      > <!-- default-open-keys：默认打开的菜单 default-selected-key：默认选中的菜单项-->
+        <a-sub-menu key="0">
+           <template #icon>
+             <icon-book/>
+           </template>
+          <template #title>文章管理</template>
+          <a-menu-item key="0_0">文章列表</a-menu-item>
+          <a-menu-item key="0_1">标签管理</a-menu-item>
+        </a-sub-menu>
+        <a-sub-menu key="1">
+           <template #icon>
+             <icon-align-left />
+           </template>
+          <template #title>评论管理</template>
+          <a-menu-item key="1_0">评论列表</a-menu-item>
+        </a-sub-menu>
+      </a-menu>
+    </div>
+
+    <!-- 后台管理：操作区域 -->
+    <div class="backend-content">
+      <!-- 后台子路由的页面 -->
+      <RouterView></RouterView>
+    </div>
+
+  </div>
+</template>
+
+<style scoped>
+.backend-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.backend-menu {
+  width: 20%;
+  height: 100%;
+  border-right: solid 2px #ccc;
+}
+
+.backend-content {
+  width: 80%;
+}
+</style>
+```
+#### 博客列表页面
+
+后台管理的 [博客列表](./backend/blogs/BlogList.vue)
+
+```html
+<script setup>
+
+</script>
+
+<template>
+  <div>
+    文章列表
+  </div>
+</template>
+
+<style scoped>
+
+</style>
+```
+
+#### 标签列表页面
+
+后台管理的 [标签列表](./backend/tags/TagList.vue)
+
+```html
+<script setup>
+
+</script>
+
+<template>
+<div>
+  标签列表
+</div>
+</template>
+
+<style scoped>
+
+</style>
+```
+
+#### 评论列表页面
+
+后台管理的 [评论列表](./backend/comments/CommentList.vue)
+
+```html
+<script setup>
+
+</script>
+
+<template>
+<div>
+  评论列表
+</div>
+</template>
+
+<style scoped>
+
+</style>
+```
+
+### 补充后台管理相关路由
+
+```js
+//   后台页面
+{
+    path: "/backend",
+    name: "BackendLayout",
+    component: () => import('@/views/backend/BackendLayout.vue'),
+    children: [
+        /* 文章统计信息 */
+        {
+            path: '',
+            name: 'Statistics',
+            component: () => import("@/views/backend/Statistics.vue")
+
+        },
+        /* 文章列表 */
+        {
+            path: 'blogs',
+            name: 'BlogsList',
+            component: () => import("@/views/backend/blogs/BlogList.vue")
+
+        },
+        /* 标签列表 */
+        {
+            path: 'tags',
+            name: 'TagList',
+            component: () => import("@/views/backend/tags/TagList.vue")
+
+        },
+        /* 评论列表 */
+        {
+            path: 'comments',
+            name: 'CommentList',
+            component: () => import("@/views/backend/comments/CommentList.vue")
+        }
+    ]
+}
+```
+
+### 对接到菜单页
 
 
 

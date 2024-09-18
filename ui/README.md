@@ -308,23 +308,9 @@ vblog 界面分为 **前台** 和管理 **后台**
 </style>
 ```
 
-### 前台
-
 因为前台与后台布局样式不一样, 因此分别使用独立布局模版.
 
-前台布局模版: `FrontendLayout.vue`
-
-### 后台
-
-博客后台使用的布局模版: `BackendLayout.vue`
-
-这里我们需要使用到侧边栏导航: [Arco Design菜单 Menu](https://arco.design/vue/component/menu)
-
-
-
-
-
-
+[布局](./src/views/README.md#布局)
 
 
 

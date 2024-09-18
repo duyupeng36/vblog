@@ -31,10 +31,27 @@ const router = createRouter({
             component: () => import('@/views/backend/BackendLayout.vue'),
             children: [
                 {
-                    path: 'admin',
-                    name: 'Admin',
-                    component: () => import("@/views/backend/Admin.vue")
+                    path: '',
+                    name: 'Statistics',
+                    component: () => import("@/views/backend/Statistics.vue")
 
+                },
+                {
+                    path: 'blogs',
+                    name: 'BlogsList',
+                    component: () => import("@/views/backend/blogs/BlogList.vue")
+
+                },
+                {
+                    path: 'tags',
+                    name: 'TagList',
+                    component: () => import("@/views/backend/tags/TagList.vue")
+
+                },
+                {
+                    path: 'comments',
+                    name: 'CommentList',
+                    component: () => import("@/views/backend/comments/CommentList.vue")
                 }
             ]
         },

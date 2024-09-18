@@ -27,10 +27,6 @@ import {RouterView} from "vue-router"
       <!-- 路由出口：路由匹配到的组件将在这里渲染 -->
       <RouterView></RouterView>
     </div>
-
-    <div class="main-footer">
-    </div>
-
   </div>
 
 </template>
@@ -39,8 +35,8 @@ import {RouterView} from "vue-router"
 
 .main-container {
   width: 90vw;
-  height: 90vh;
-  margin: 0 auto;
+  height: calc(100vh - 47px);
+  margin: auto;
 }
 
 .navigation {
@@ -62,8 +58,5 @@ import {RouterView} from "vue-router"
   border-right: solid 2px #ccc;
 }
 
-.main-footer {
-  border: solid 2px #ccc;
-}
 </style>
 
