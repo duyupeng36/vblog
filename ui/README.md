@@ -226,7 +226,99 @@ app.mount('#app')
 
 为了切换和展示页面，需要引入 [路由](./src/router/README.md)
 
+## 布局
 
+vblog 界面分为 **前台** 和管理 **后台**
+
+博客前台样式如下
+
+![front.png](.images/front.png)
+
+博客管理后台:
+
+![background.png](.images/background.png)
+
+布局需要 [嵌套路由](./src/router/README.md#嵌套路由) 的支持
+
+无论前台还是后台，都需要一个 **导航栏** 。因此，我们在 `App.vue` 中布局导航栏
+
+```html
+<script setup>
+    import {RouterView} from "vue-router"
+</script>
+
+<template>
+    <div class="main-container">
+        <!-- 导航区 -->
+        <div class="navigation">
+
+            <!-- Logo 显示区域 -->
+            <div class="">
+                杜宇鹏的个人博客系统
+            </div>
+            <!--登录操作区域-->
+            <div>
+                <a-space>
+                    <a-button>管理(登录后出现)</a-button>
+                    <a-button>登录(未登录出现)</a-button>
+                </a-space>
+            </div>
+        </div>
+        <!-- 页面展示区 -->
+        <div class="main-page">
+            <!-- 路由出口：路由匹配到的组件将在这里渲染 -->
+            <RouterView></RouterView>
+        </div>
+        <!-- 页脚 -->
+        <div class="main-footer">
+        </div>
+    </div>
+</template>
+
+<style scoped>
+
+    .main-container {
+        width: 90vw;
+        height: 90vh;
+        margin: 0 auto;
+    }
+
+    .navigation {
+        /*样式*/
+        height: 45px;
+        border-bottom: solid 2px #ccc;
+        background-color: #F2F3F5;
+
+        /* 布局 */
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .main-page {
+        height: 100%;
+        width: 100%;
+        border-left: solid 2px #ccc;
+        border-right: solid 2px #ccc;
+    }
+
+    .main-footer {
+        border: solid 2px #ccc;
+    }
+</style>
+```
+
+### 前台
+
+因为前台与后台布局样式不一样, 因此分别使用独立布局模版.
+
+前台布局模版: `FrontendLayout.vue`
+
+### 后台
+
+博客后台使用的布局模版: `BackendLayout.vue`
+
+这里我们需要使用到侧边栏导航: [Arco Design菜单 Menu](https://arco.design/vue/component/menu)
 
 
 

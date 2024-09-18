@@ -1,17 +1,69 @@
 <script setup>
-import {RouterView, RouterLink} from "vue-router"
+import {RouterView} from "vue-router"
 </script>
 
 <template>
-  <!--    使用 RouterLink 组件进行视图切换-->
-  <RouterLink :to="{path:'/'}"> Home</RouterLink>
-  <RouterLink :to="{name:'PermissionDeny'}"> PermissionDeny</RouterLink>
-  <!-- 这是根页面：所有的页面都需要挂载在 App.vue 中才能呈现出来 -->
-  <!--  特别是 Vue Router 的子页面 -->
-  <div class="content">
-    <!-- 路由出口：路由匹配到的组件将在这里渲染 -->
-    <RouterView></RouterView>
+
+  <div class="main-container">
+
+    <!-- 导航区 -->
+    <div class="navigation">
+
+      <!-- Logo 显示区域 -->
+      <div class="">
+        杜宇鹏的个人博客系统
+      </div>
+      <!--登录操作区域-->
+      <div>
+        <a-space>
+          <a-button>管理(登录后出现)</a-button>
+          <a-button>登录(未登录出现)</a-button>
+        </a-space>
+      </div>
+    </div>
+
+
+    <div class="main-page">
+      <!-- 路由出口：路由匹配到的组件将在这里渲染 -->
+      <RouterView></RouterView>
+    </div>
+
+    <div class="main-footer">
+    </div>
+
   </div>
+
 </template>
 
-<style scoped></style>
+<style scoped>
+
+.main-container {
+  width: 90vw;
+  height: 90vh;
+  margin: 0 auto;
+}
+
+.navigation {
+  /*样式*/
+  height: 45px;
+  border-bottom: solid 2px #ccc;
+  background-color: #F2F3F5;
+
+  /* 布局 */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.main-page {
+  height: 100%;
+  width: 100%;
+  border-left: solid 2px #ccc;
+  border-right: solid 2px #ccc;
+}
+
+.main-footer {
+  border: solid 2px #ccc;
+}
+</style>
+
