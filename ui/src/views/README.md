@@ -59,15 +59,9 @@ vblog 前端部分需要补充下面两种 **异常视图**
 
 ## 布局
 
-
-### 前台
-
-前台布局模版: [`FrontendLayout.vue`](./frontend/FrontendLayout.vue)
-
-
 ### 后台
 
-博客后台使用的布局模版: [`BackendLayout.vue`](./backend/BackendLayout.vue)
+博客后台使用的布局模版: [BackendLayout.vue](./backend/BackendLayout.vue)
 
 这里我们需要使用到侧边栏导航:[Arco Design菜单 Menu](https://arco.design/vue/component/menu)
 
@@ -194,47 +188,86 @@ import {RouterView} from "vue-router"
 </style>
 ```
 
-### 补充后台管理相关路由
+#### 补充后台管理相关路由
 
 ```js
-//   后台页面
+        //   后台页面
 {
     path: "/backend",
-    name: "BackendLayout",
+        name: "backend",
     component: () => import('@/views/backend/BackendLayout.vue'),
     children: [
-        /* 文章统计信息 */
-        {
-            path: '',
-            name: 'Statistics',
-            component: () => import("@/views/backend/Statistics.vue")
+    {
+        path: '',
+        name: 'statistics',
+        component: () => import("@/views/backend/Statistics.vue")
 
-        },
-        /* 文章列表 */
-        {
-            path: 'blogs',
-            name: 'BlogsList',
-            component: () => import("@/views/backend/blogs/BlogList.vue")
+    },
+    {
+        path: 'blogs',
+        name: 'backend-blogs',
+        component: () => import("@/views/backend/blogs/BlogList.vue")
 
-        },
-        /* 标签列表 */
-        {
-            path: 'tags',
-            name: 'TagList',
-            component: () => import("@/views/backend/tags/TagList.vue")
+    },
+    {
+        path: 'tags',
+        name: 'backend-tags',
+        component: () => import("@/views/backend/tags/TagList.vue")
 
-        },
-        /* 评论列表 */
-        {
-            path: 'comments',
-            name: 'CommentList',
-            component: () => import("@/views/backend/comments/CommentList.vue")
-        }
-    ]
+    },
+    {
+        path: 'comments',
+        name: 'backend-comments',
+        component: () => import("@/views/backend/comments/CommentList.vue")
+    }
+]
 }
 ```
 
-### 对接到菜单页
+> `name` 属性必须全局唯一：因为需要通过 `name` 进行页面切换
+
+#### 路由对接到菜单页
+
+给 `a-menu` 标签绑定一个 `@menu-item-click="menuItemClickHandler"` 事件
+
+```js
+
+import {useRouter} from "vue-router"
+
+const router = useRouter() // 获取路由实例
+
+const menuItemClickHandler = (key) => {
+  router.push({ name: key }) // 跳转到点击的标签对应的视图
+}
+```
+
+### 前台
+
+前台布局模版: [FrontendLayout.vue](./frontend/FrontendLayout.vue)
+
+
+#### 布局页面
+
+```html
+<script setup>
+
+import {RouterView} from "vue-router"
+
+</script>
+
+<template>
+  <div class="frontend-container">
+    <!-- 前台子路由的页面 -->
+    <RouterView></RouterView>
+  </div>
+</template>
+
+<style scoped>
+
+</style>
+```
+
+
 
 
 

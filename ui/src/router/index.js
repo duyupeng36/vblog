@@ -8,56 +8,61 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component: HomeView
+            redirect: '/frontend',
         },
         //   前台页面
         {
             path: "/frontend",
-            name: "FrontendLayout",
+            name: "frontend",
             component: () => import('@/views/frontend/FrontendLayout.vue'),
             children: [
                 {
-                    path: 'blogs/list',
-                    name: 'BlogsList',
-                    component: () => import("@/views/frontend/BlosList.vue")
+                    path: '',
+                    name: 'frontend-blogs',
+                    component: () => import("@/views/frontend/BlogList.vue")
+                },
+                {
+                    path: ':id',
+                    name: 'blog-content',
+                    component: () => import("@/views/frontend/BlogView.vue")
+                },
 
-                }
             ]
         },
         //   后台页面
         {
             path: "/backend",
-            name: "BackendLayout",
+            name: "backend",
             component: () => import('@/views/backend/BackendLayout.vue'),
             children: [
                 {
                     path: '',
-                    name: 'Statistics',
+                    name: 'statistics',
                     component: () => import("@/views/backend/Statistics.vue")
 
                 },
                 {
                     path: 'blogs',
-                    name: 'BlogsList',
+                    name: 'backend-blogs',
                     component: () => import("@/views/backend/blogs/BlogList.vue")
 
                 },
                 {
                     path: 'tags',
-                    name: 'TagList',
+                    name: 'backend-tags',
                     component: () => import("@/views/backend/tags/TagList.vue")
 
                 },
                 {
                     path: 'comments',
-                    name: 'CommentList',
+                    name: 'backend-comments',
                     component: () => import("@/views/backend/comments/CommentList.vue")
                 }
             ]
         },
         {
             path: '/error/403',
-            name: 'PermissionDeny',
+            name: 'permission-deny',
             // route level code-splitting
             // this generates a separate chunk (About.[hash].js) for this route
             // which is lazy-loaded when the route is visited.
@@ -65,7 +70,7 @@ const router = createRouter({
         },
         {
             path: "/:pathMatch(.*)*",  // 匹配所有前面没有命中的路由
-            name: "NotFound",
+            name: "not-found",
             component: () => import('@/views/errors/NotFound.vue'),
         }
     ]

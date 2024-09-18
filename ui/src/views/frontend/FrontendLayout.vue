@@ -1,4 +1,4 @@
-<script setup>
+<script setup name="FrontendLayout">
 
 import {RouterView} from "vue-router"
 

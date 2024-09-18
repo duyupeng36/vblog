@@ -1,11 +1,11 @@
-<script setup>
+<script setup name="BackendLayout">
 
 import {RouterView, useRouter} from "vue-router"
 
 const router = useRouter()
 
 const menuItemClickHandler = (key) => {
-  router.push({ name: key })
+  router.push({name: key})
 }
 
 </script>
@@ -20,19 +20,19 @@ const menuItemClickHandler = (key) => {
           @menu-item-click="menuItemClickHandler"
       > <!-- default-open-keys：默认打开的菜单 default-selected-key：默认选中的菜单项-->
         <a-sub-menu key="blog">
-           <template #icon>
-             <icon-book/>
-           </template>
+          <template #icon>
+            <icon-book/>
+          </template>
           <template #title>文章管理</template>
-          <a-menu-item key="BlogsList">文章列表</a-menu-item>
-          <a-menu-item key="TagList">标签管理</a-menu-item>
+          <a-menu-item key="backend-blogs">文章列表</a-menu-item>
+          <a-menu-item key="backend-tags">标签管理</a-menu-item>
         </a-sub-menu>
         <a-sub-menu key="comment">
-           <template #icon>
-             <icon-align-left />
-           </template>
+          <template #icon>
+            <icon-align-left/>
+          </template>
           <template #title>评论管理</template>
-          <a-menu-item key="CommentList">评论列表</a-menu-item>
+          <a-menu-item key="backend-comments">评论列表</a-menu-item>
         </a-sub-menu>
       </a-menu>
     </div>
