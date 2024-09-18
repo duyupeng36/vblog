@@ -3,8 +3,8 @@ import './assets/main.css'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
-import App from './App.vue'
-import router from './router'
+import App from '@/App.vue'
+import router from '@/router'
 
 // 加载组件
 import ArcoVue from '@arco-design/web-vue';
@@ -23,3 +23,4 @@ app.use(ArcoVue)  // 注册 Arco UI 组件
 app.use(ArcoVueIcon) // 注册 Arco Icon 组件
 
 app.mount('#app')
+
