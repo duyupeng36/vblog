@@ -404,3 +404,13 @@ import {beforeEachHandler} from "./permission.js"
 router.beforeEach(beforeEachHandler)
 ```
 
+登录成功之后跳转的视图就需要通过当前的 route 对象中的 `query` 参数 `redirect` 获取。下面代码片段就行 [Login.vue](../views/Login.vue) 中登录成功后跳转页面的代码
+```js
+// 跳转
+if (!currentRoute.query.hasOwnProperty('redirect')) {
+router.push({name: "backend"})
+} else {
+router.push({name: currentRoute.query.redirect})
+}
+```
+

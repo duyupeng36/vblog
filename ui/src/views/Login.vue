@@ -2,7 +2,7 @@
 
 import {reactive} from "vue";
 import {Message} from "@arco-design/web-vue";
-import {useRouter} from "vue-router";
+import {useRouter, useRoute} from "vue-router";
 
 import loginState from "@/stores/login.js"
 
@@ -12,7 +12,8 @@ const form = reactive({
   password: "",
 })
 
-const router = useRouter()
+const router = useRouter() // 获取 路由器 对象
+const currentRoute = useRoute()
 
 const handleSubmit = (data) => {
   if (!data.errors) {
@@ -25,8 +26,13 @@ const handleSubmit = (data) => {
       loginState.value.username = data.values.username
       loginState.value.isLogin = true
 
-      // 跳转到 后台
-      router.push({name: "backend"})
+      // 跳转
+      if (!currentRoute.query.hasOwnProperty('redirect')) {
+        router.push({name: "backend"})
+      } else {
+        router.push({name: currentRoute.query.redirect})
+      }
+
     } else {
       Message.error("用户名或密码错误")
       return false;
