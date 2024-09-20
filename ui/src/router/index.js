@@ -10,6 +10,11 @@ const router = createRouter({
             name: 'home',
             redirect: '/frontend',
         },
+        {
+            path: '/login',
+            name: 'login',
+            component: () => import('@/views/Login.vue'),
+        },
         //   前台页面
         {
             path: "/frontend",

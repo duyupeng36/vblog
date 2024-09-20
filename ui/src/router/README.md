@@ -224,7 +224,7 @@ router.push({ path: `/user/${username}` }) // -> /user/eduardo
 router.push({ name: 'user', params: { username } }) // -> /user/eduardo
 // `params` 不能与 `path` 一起使用
 router.push({ path: '/user', params: { username } }) // -> /user
-```
+``` 
 
 #### 替换当前位置
 

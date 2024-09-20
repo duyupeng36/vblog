@@ -1,5 +1,21 @@
 <script setup name="Header">
 
+import {useRouter} from "vue-router"
+import {loginState} from "@/stores/login"
+
+const router = useRouter()
+
+
+function Logout() {
+  loginState.value.isLogin = false
+  loginState.value.username = ""
+  router.push({name: "frontend"})
+}
+
+function Login() {
+  router.push({name: "login"})
+}
+
 </script>
 
 <template>
@@ -11,8 +27,9 @@
   <!--登录操作区域-->
   <div>
     <a-space>
-      <a-button>管理(登录后出现)</a-button>
-      <a-button>登录(未登录出现)</a-button>
+      <a-button v-if="loginState.isLogin">管理</a-button>
+      <a-button v-if="loginState.isLogin" @click="Logout">注销</a-button>
+      <a-button v-if="!loginState.isLogin" @click="Login">登录</a-button>
     </a-space>
   </div>
 </div>

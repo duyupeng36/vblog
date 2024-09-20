@@ -267,6 +267,179 @@ import {RouterView} from "vue-router"
 </style>
 ```
 
+#### BlogView 页面
+
+展示博客内容的页面
+
+```html
+<script setup name="BlogView">
+
+</script>
+
+<template>
+  <main>
+    博客页面
+  </main>
+</template>
+
+<style scoped>
+
+</style>
+```
+
+#### BlogList 页面
+
+博客列表页面
+
+```html
+<script setup name="BlogList">
+
+</script>
+
+<template>
+  <div>
+    Blogs List
+  </div>
+</template>
+
+<style scoped>
+
+</style>
+```
+
+#### 前台路由
+
+```js
+//   前台页面
+{
+    path: "/frontend",
+    name: "frontend",
+    component: () => import('@/views/frontend/FrontendLayout.vue'),
+    children: [
+        {
+            path: '',
+            name: 'frontend-blogs',
+            component: () => import("@/views/frontend/BlogList.vue")
+        },
+        {
+            path: ':id',
+            name: 'blog-content',
+            component: () => import("@/views/frontend/BlogView.vue")
+        },
+
+    ]
+}
+```
+
+## 前后台切换
+
+### 前台切换到后台
+
+用户未登录的时候是不应该让其查看后台页面的。因此，我们首先补充一个 **登录页面**
+
+```html
+<script setup>
+
+import {reactive} from "vue";
+import {Message} from "@arco-design/web-vue";
+import {useRouter} from "vue-router";
+
+import {loginState} from "@/stores/login.js"
+
+
+const form = reactive({
+  username: "",
+  password: "",
+})
+
+const router = useRouter()
+
+const handleSubmit = (data) => {
+  if (!data.errors) {
+
+    // 对接后端 API
+    console.log(data)
+    if (data.values.username === "admin" && data.values.password === "123456") {
+      console.log("登录成功")
+
+      // 保存一个全局状态，最好的方式使用 localStorage 保存登录状态，方便其他标签页或组件读取
+
+      loginState.value.username = data.values.username
+      loginState.value.isLogin = true
+
+      // 跳转到 后台
+      router.push({name: "backend"})
+    } else {
+      Message.error("用户名或密码错误")
+      return false;
+    }
+  }
+}
+
+</script>
+
+<template>
+ <div class="login-container">
+   <a-form :model="form" :style="{width:'600px'}" @submit="handleSubmit">
+     <a-form-item>
+       <div class="login-title">
+         欢迎登录
+       </div>
+     </a-form-item>
+     <a-form-item
+         field="username"
+         tooltip="请输入用户名"
+         label="用户名"
+         :rules="[{required:true, message:'用户名是必须的'}]"
+         :validate-trigger="['input']"
+     >
+       <a-input
+           v-model="form.username"
+           placeholder="请输入用户名..."
+       />
+     </a-form-item>
+     <a-form-item
+         field="password"
+         tooltip="请输入密码"
+         label="密&emsp;码"
+         :rules="[{required:true, message:'密码是必须的'}, {minLength:6, message:'密码不能低于 6 位'}]"
+         :validate-trigger="['input']"
+     >
+       <a-input-password
+           v-model="form.password"
+           placeholder="请输入密码..."
+           :defaultVisibility="false"
+           allow-clear />
+     </a-form-item>
+     <a-form-item>
+       <a-button html-type="submit" :style="{width: '100%'}">登录</a-button>
+     </a-form-item>
+   </a-form>
+ </div>
+</template>
+
+<style scoped>
+
+.login-container {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-title {
+  width: 100%;
+  text-align: center;
+  font-size: 4rem;
+  color: #0e0630;
+}
+</style>
+```
+
+登录状态需要持久化，即 [状态管理](../stores/README.md#vueuse与本地存储)。登录状态定义在 [login.js](../stores/login.js)，这采用全局变量，哪里需要就在那里导入即可
+
+
+
 
 
 
