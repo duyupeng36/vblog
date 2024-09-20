@@ -336,7 +336,7 @@ npm install axios
 首先，我们在 `src/api/login.js` 中封装后端登录的接口
 
 ```js
-import httpClient from "./index.js"
+import httpClient from "./client.js"
 
 // 对应后端 login 接口
 export async function LOGIN(username, password) {
@@ -407,13 +407,79 @@ const instance = axios.create({
 export default instance;
 ```
 
+#### 响应拦截
 
+拦截响应，统一处理后端响应的数据。在 [client.js](./src/api/client.js)
 
-### 对接后台
+```js
+import axios from "axios";
+
+// 创建 axios 客户端
+
+const instance = axios.create({
+    baseURL: "",  // 后端地址，被 vite 代理了。即 http://localhost:5173/vblog/api/v1/....
+    timeout: 5000, // 超时时间
+    headers: {
+        'Content-Type': 'application/json',
+    }
+})
+
+// 为 instance 添加拦截器，通过拦截器做异常的统一处理
+
+// instance.interceptors.request.use() // 请求拦截
+instance.interceptors.response.use(
+    // 成功就只返回data
+    (response) => {
+        return response.data;
+    },
+    // 异常
+    (error) => {
+        let message = error.message;
+        if (error.response && error.response.data) {
+            message = error.response.data.data.message;
+        }
+        return Promise.reject(new Error(message));
+    }
+) // 响应拦截
+
+export default instance;
+```
+
+#### 完成后端对接
+
+在 [Login.vue](./src/views/Login.vue) 中
+
+```js
+const handleSubmit = async (data) => {
+    if (!data.errors) {
+        // // 对接后端 API
+        try {
+            let result =  await LOGIN(form.username, form.password)
+
+            console.log(result)
+
+            // 保存一个全局状态，最好的方式使用 localStorage 保存登录状态，方便其他标签页或组件
+            loginState.value.username = result.data.username
+            loginState.value.token = result.data.access_token
+            loginState.value.isLogin = true
+
+            // 跳转
+            if (!currentRoute.query.hasOwnProperty("redirect")) {
+                await router.push({name: "backend"})
+            } else {
+                await router.push({name: currentRoute.query.redirect})
+            }
+        } catch (error) {
+            Message.error(error.message)
+        }
+    }
+}
+```
+
+### 对接后台管理
 
 
 ### 对接前台
-
 
 
 ## 致谢

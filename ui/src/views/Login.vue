@@ -16,24 +16,25 @@ const form = reactive({
 const router = useRouter() // 获取 路由器 对象
 const currentRoute = useRoute() // 获取当前页面的 route 对象
 
-const handleSubmit = (data) => {
+const handleSubmit = async (data) => {
   if (!data.errors) {
     // // 对接后端 API
     try {
-      let result = LOGIN(form.username, form.password)
+      let result =  await LOGIN(form.username, form.password)
 
       console.log(result)
 
       // 保存一个全局状态，最好的方式使用 localStorage 保存登录状态，方便其他标签页或组件
-      loginState.value.username = data.values.username
+      loginState.value.username = result.data.username
       loginState.value.isLogin = true
-      //
-      // // 跳转
-      // if (!currentRoute.query.hasOwnProperty("redirect")) {
-      //   router.push({name: "backend"})
-      // } else {
-      //   router.push({name: currentRoute.query.redirect})
-      // }
+      loginState.value.token = result.data.access_token
+
+      // 跳转
+      if (!currentRoute.query.hasOwnProperty("redirect")) {
+        await router.push({name: "backend"})
+      } else {
+        await router.push({name: currentRoute.query.redirect})
+      }
     } catch (error) {
       Message.error(error.message)
     }
