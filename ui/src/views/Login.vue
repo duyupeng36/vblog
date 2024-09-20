@@ -4,7 +4,7 @@ import {reactive} from "vue";
 import {Message} from "@arco-design/web-vue";
 import {useRouter} from "vue-router";
 
-import {loginState} from "@/stores/login.js"
+import loginState from "@/stores/login.js"
 
 
 const form = reactive({
@@ -18,7 +18,6 @@ const handleSubmit = (data) => {
   if (!data.errors) {
 
     // 对接后端 API
-    console.log(data)
     if (data.values.username === "admin" && data.values.password === "123456") {
       console.log("登录成功")
 

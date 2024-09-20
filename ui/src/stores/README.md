@@ -435,7 +435,7 @@ export default {
 npm i pinia-plugin-persist --save
 ```
 
-安装好了后我们配置 `vuex` 使用该插件： `store/index.js`
+安装好了后我们配置 `vuex` 使用该插件： `store/login.js`
 
 ```js
 // 1. 引入依赖

@@ -25,7 +25,7 @@ Vue 中视图之间的切换最主要的就是 **引起浏览器 URL 的变化**
 
 我们已经完成 [异常视图组件](../views/README.md#异常视图) 的编写了。现在，将它们注册到路由表中
 
-首先，创建路由器，并提供路由表，然后默认导出路由器。这部内容，在 `router/index.js` 中编写
+首先，创建路由器，并提供路由表，然后默认导出路由器。这部内容，在 `router/login.js` 中编写
 ```js
 // 导入创建路由和路由历史记录模式函数
 import { createRouter, createWebHistory } from 'vue-router'
@@ -353,5 +353,54 @@ const routes = [
 ]
 ```
 
+## 导航守卫
 
+用户访问到页面之前，需要做权限判定
+
+关于[导航守卫](https://router.vuejs.org/zh/guide/advanced/navigation-guards.html)
+
+因此，需要在进入页面之前添加一个 hook 函数，并判断用户是否登录
++ 用户登录了，就进入 `backend`
++ 未登录，进入 `login`
+
+### 后台页面守卫
+
+单独起一个模块: `router/permission.js` 来定义导航守卫钩子函数
+
+```js
+import loginState from "@/stores/login.js"
+
+// 定义导航守卫
+export async function beforeEachHandler(to, from, next) {
+    // 只判断到后台页面
+    if (to.fullPath.startsWith("/backend")) {
+        // 如果未登陆 重定向到登录页面, 并且把目标页面作为重定向参数传递下去
+        if (!loginState.value.isLogin) {
+            console.log("not login");
+            next({
+                path: "/login",
+                query: {
+                    redirect: to.name,
+                    ...to.query,
+                },
+            });
+        } else {
+            // 已经登录的用户直接放行
+            next();
+        }
+    } else {
+        // 不属于/backend的页面 直接放开
+        next();
+    }
+}
+```
+
+然后将这个函数添加到 `router` 对象中
+
+```js
+import {beforeEachHandler} from "./permission.js"
+
+// 设置导航守卫
+router.beforeEach(beforeEachHandler)
+```
 

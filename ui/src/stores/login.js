@@ -1,9 +1,7 @@
 
 import {useStorage} from "@vueuse/core"
 
-
-export const loginState =  useStorage("loginState", {
+export default useStorage("loginState", {
     username:"",
     isLogin: false,
 }, localStorage, {mergeDefaults: true})
-

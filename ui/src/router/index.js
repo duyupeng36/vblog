@@ -1,5 +1,5 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import {beforeEachHandler} from "./permission.js"
 
 // 创还能一个 router
 const router = createRouter({
@@ -80,6 +80,9 @@ const router = createRouter({
         }
     ]
 })
+
+// 设置导航守卫
+router.beforeEach(beforeEachHandler)
 
 // 将 router 暴露出去
 export default router
