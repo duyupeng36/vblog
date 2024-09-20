@@ -322,9 +322,97 @@ vblog 界面分为 **前台** 和管理 **后台**
 
 [导航守卫](./src/router/README.md#导航守卫)
 
+## 对接后端
+
+开始对接后端 api。对接后端 API 需要使用 [axios](https://www.axios-http.cn/docs/intro)
+
+安装 axios
+```shell
+npm install axios
+```
+
+### 对接登录
+
+首先，我们在 `src/api/login.js` 中封装后端登录的接口
+
+```js
+import httpClient from "./index.js"
+
+// 对应后端 login 接口
+export async function LOGIN(username, password) {
+    return await httpClient.post("/users/token", {
+        username: username,
+        password: password,
+    })
+}
+```
+
+在 [Login.vue](./src/views/Login.vue) 中对接登录接口
+
+```js
+const handleSubmit = (data) => {
+    if (!data.errors) {
+        // // 对接后端 API
+        try {
+            let result = LOGIN(form.username, form.password)
+            console.log(result)
+        } catch (error) {
+            Message.error(error.message)
+        }
+    }
+}
+```
+
+访问错误
+
+```
+Access to XMLHttpRequest at 'http://localhost:8010/vblog/api/v1/users/token' from origin 'http://localhost:5173' has been blocked by CORS policy: Response to preflight request doesn't pass access control check: No 'Access-Control-Allow-Origin' header is present on the requested resource.
+```
+
+这里我们的前端和后端运行在不同的域下，由于后端不允许跨域，导致浏览器的跨域策略失败
+
+由于我们开发的 **单体项目**，前后端的开发是分离的，域不必分离，都是用同一个域
+
+这里我们使用 vite 做为代理(Niginx 角色)，完成 API 访问的代理，避免浏览器直接向后端发起请求
+
+在 [vite.config.js] 中配置反向代理
+
+```js
+// 配置服务端代理
+server:{
+proxy: {
+  '/vblog/api/v1': {
+    target: 'http://localhost:8010/'
+  }
+}
+}
+```
+
+`axios` 的实例对象配置如下
+
+```js
+import axios from "axios";
+
+// 创建 axios 客户端
+
+
+const instance = axios.create({
+    baseURL: "",  // 后端地址，被 vite 代理了。即 http://localhost:5173/vblog/api/v1/.... => http://localhost:8010/vblog/api/v1/...
+    timeout: 5000, // 超时时间
+    headers: {
+        'Accept': 'application/json',
+    }
+})
+
+export default instance;
+```
 
 
 
+### 对接后台
+
+
+### 对接前台
 
 
 

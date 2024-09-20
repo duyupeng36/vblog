@@ -39,12 +39,12 @@ func (h *handler) Init() error {
 // Registry 将 API 与 HTTP 路由对应上
 func (h *handler) Registry(r gin.IRouter) {
 	r.GET("", h.QueryBlog)
+	r.GET("/:id", h.DescribeBlog)
 
 	auth := r.Group("").Use(middleware.Auth)
 	{
 		// 注册 路由
 		auth.POST("", h.CreateBlog)
-		auth.GET("/:id", h.DescribeBlog)
 		auth.PATCH("", h.UpdateBlog)
 		auth.DELETE("/:id", h.DeleteBlog)
 	}

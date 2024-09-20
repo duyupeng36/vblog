@@ -404,8 +404,15 @@ import {beforeEachHandler} from "./permission.js"
 router.beforeEach(beforeEachHandler)
 ```
 
-登录成功之后跳转的视图就需要通过当前的 route 对象中的 `query` 参数 `redirect` 获取。下面代码片段就行 [Login.vue](../views/Login.vue) 中登录成功后跳转页面的代码
+登录成功之后跳转的视图就需要 **通过当前的 route 对象** 中的 `query` 参数 `redirect` 获取。 `useRoute()` 函数可以获取当前页面的 route 对象
+
+下面代码片段就行 [Login.vue](../views/Login.vue) 中登录成功后跳转页面的代码
+
 ```js
+import {useRoute} from "vue-router";
+
+const currentRoute = useRoute() // 获取当前页面的 route 对象
+
 // 跳转
 if (!currentRoute.query.hasOwnProperty('redirect')) {
 router.push({name: "backend"})

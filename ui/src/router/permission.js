@@ -10,6 +10,7 @@ export async function beforeEachHandler(to, from, next) {
             console.log("not login");
             next({
                 path: "/login",
+                // 通过 query 参数记录用户真正想要去的路由名字
                 query: {
                     redirect: to.name,
                     ...to.query,

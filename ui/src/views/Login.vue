@@ -3,8 +3,9 @@
 import {reactive} from "vue";
 import {Message} from "@arco-design/web-vue";
 import {useRouter, useRoute} from "vue-router";
-
 import loginState from "@/stores/login.js"
+
+import {LOGIN} from "@/api/login.js"
 
 
 const form = reactive({
@@ -13,29 +14,28 @@ const form = reactive({
 })
 
 const router = useRouter() // 获取 路由器 对象
-const currentRoute = useRoute()
+const currentRoute = useRoute() // 获取当前页面的 route 对象
 
 const handleSubmit = (data) => {
   if (!data.errors) {
+    // // 对接后端 API
+    try {
+      let result = LOGIN(form.username, form.password)
 
-    // 对接后端 API
-    if (data.values.username === "admin" && data.values.password === "123456") {
-      console.log("登录成功")
+      console.log(result)
 
       // 保存一个全局状态，最好的方式使用 localStorage 保存登录状态，方便其他标签页或组件
       loginState.value.username = data.values.username
       loginState.value.isLogin = true
-
-      // 跳转
-      if (!currentRoute.query.hasOwnProperty('redirect')) {
-        router.push({name: "backend"})
-      } else {
-        router.push({name: currentRoute.query.redirect})
-      }
-
-    } else {
-      Message.error("用户名或密码错误")
-      return false;
+      //
+      // // 跳转
+      // if (!currentRoute.query.hasOwnProperty("redirect")) {
+      //   router.push({name: "backend"})
+      // } else {
+      //   router.push({name: currentRoute.query.redirect})
+      // }
+    } catch (error) {
+      Message.error(error.message)
     }
   }
 }

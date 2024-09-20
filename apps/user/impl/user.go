@@ -6,7 +6,7 @@ import (
 	"vblog/utils/errors"
 )
 
-// 注册用户
+// CreateUser 注册用户
 func (i *impl) CreateUser(ctx context.Context, in *user.CreateUserRequest) (*user.User, error) {
 
 	if err := in.Validate(); err != nil {
@@ -32,7 +32,7 @@ func (i *impl) CreateUser(ctx context.Context, in *user.CreateUserRequest) (*use
 	return ins, nil
 }
 
-// 删除用户
+// DeleteUser 删除用户
 func (i *impl) DeleteUser(ctx context.Context, in *user.DeleteUserRequest) (*user.User, error) {
 
 	ins := user.NewUser(user.NewUserInfo())
@@ -48,7 +48,7 @@ func (i *impl) DeleteUser(ctx context.Context, in *user.DeleteUserRequest) (*use
 	return ins, nil
 }
 
-// 登录
+// Login 登录
 func (i *impl) Login(ctx context.Context, in *user.LoginRequest) (*user.Token, error) {
 
 	if err := in.Validate(); err != nil {
@@ -63,6 +63,11 @@ func (i *impl) Login(ctx context.Context, in *user.LoginRequest) (*user.Token, e
 
 	if err := ins.CheckPassword(in.Password); err != nil {
 		return nil, errors.NewUnauthorizedError(err.Error())
+	}
+
+	// 删除之前的token
+	if err := i.db.WithContext(ctx).Model(&user.Token{}).Where("username = ?", in.Username).Delete(&user.Token{}).Error; err != nil {
+
 	}
 
 	tk := user.NewToken(ins.Username)

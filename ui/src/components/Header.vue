@@ -1,9 +1,11 @@
 <script setup name="Header">
 
-import {useRouter} from "vue-router"
+import {useRouter, useRoute} from "vue-router"
 import loginState from "@/stores/login"
 
 const router = useRouter()
+
+const currentRoute = useRoute()
 
 function Logout() {
   loginState.value.isLogin = false
@@ -34,8 +36,8 @@ function JumpToFrontend() {
   <!--登录操作区域-->
   <div>
     <a-space>
-      <a-button v-if="loginState.isLogin && router.currentRoute.value.fullPath.startsWith('/frontend')" @click="JumpToBackend">后台管理</a-button>
-      <a-button v-if="loginState.isLogin && router.currentRoute.value.fullPath.startsWith('/backend')" @click="JumpToFrontend">前台浏览</a-button>
+      <a-button v-if="loginState.isLogin && currentRoute.fullPath.startsWith('/frontend')" @click="JumpToBackend">后台管理</a-button>
+      <a-button v-if="loginState.isLogin && currentRoute.fullPath.startsWith('/backend')" @click="JumpToFrontend">前台浏览</a-button>
       <a-button v-if="loginState.isLogin" @click="Logout">注销</a-button>
       <a-button v-if="!loginState.isLogin" @click="Login">登录</a-button>
     </a-space>

@@ -3,6 +3,7 @@ package api
 import (
 	"net/http"
 	"strconv"
+	"strings"
 	"vblog/apps/user"
 	"vblog/utils/errors"
 	"vblog/utils/response"
@@ -57,7 +58,7 @@ func (h *handler) Login(ctx *gin.Context) {
 		return
 	}
 
-	ctx.SetCookie(user.AUTOH_COOKIE_NAME, tk.AccessToken, 3600*12, "/", ctx.Request.Host, false, false)
+	ctx.SetCookie(user.AUTOH_COOKIE_NAME, tk.AccessToken, 3600*12, "/", strings.TrimRight(ctx.Request.Host, ":0123456789"), false, false)
 
 	response.SendSuccess(ctx, tk)
 }

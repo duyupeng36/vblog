@@ -15,5 +15,13 @@ export default defineConfig({
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))
     }
+  },
+  // 配置服务端代理
+  server:{
+    proxy: {
+      '/vblog/api/v1': {
+        target: 'http://localhost:8010/',
+      }
+    }
   }
 })

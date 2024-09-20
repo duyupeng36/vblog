@@ -86,7 +86,7 @@ func NewUserInfo() *UserInfo {
 type Token struct {
 	*Meta
 	Username    string `json:"username"`
-	AccessToken string `json:"acess_token"`
+	AccessToken string `json:"access_token"`
 }
 
 func NewToken(username string) *Token {
