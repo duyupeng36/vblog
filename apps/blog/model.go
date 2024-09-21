@@ -45,7 +45,7 @@ func NewMeta() *Meta {
 // Body 用户提供的文章数据
 type Body struct {
 	Title   string            `json:"title" validate:"required"`
-	Author  string            `json:"Author" validate:"required"`
+	Author  string            `json:"author" validate:"required"`
 	Content string            `json:"content" validate:"required"`
 	Tags    map[string]string `json:"tags" gorm:"serializer:json"`
 	Status  STATUS            `json:"status"`

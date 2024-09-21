@@ -30,10 +30,10 @@ type Service interface {
 // 关键字查询，模糊查询
 // 条件过滤，作者是谁
 type QueryBlogRequest struct {
-	PageSize   int    // 每页的大小
-	PageNumber int    // 当前页
-	Keywords   string // 模糊查找，通过文章内容
-	Author     string // 条件，作者是谁
+	PageSize   int    `json:"page_size"`   // 每页的大小
+	PageNumber int    `json:"page_number"` // 当前页
+	Keywords   string `json:"keywords"`    // 模糊查找，通过文章内容
+	Author     string `json:"author"`      // 条件，作者是谁
 }
 
 func (q *QueryBlogRequest) Offset() int {

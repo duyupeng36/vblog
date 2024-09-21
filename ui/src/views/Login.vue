@@ -20,7 +20,7 @@ const handleSubmit = async (data) => {
   if (!data.errors) {
     // // 对接后端 API
     try {
-      let result =  await LOGIN(form.username, form.password)
+      let result =  await LOGIN(form)
 
       console.log(result)
 
